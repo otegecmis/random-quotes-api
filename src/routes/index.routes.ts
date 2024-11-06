@@ -1,11 +1,9 @@
-import express, { Router, Request, Response } from 'express';
+import express, { Router } from 'express';
 
 const router: Router = express.Router();
 
-router.get('/', (req: Request, res: Response) => {
-  res.json({
-    message: 'Hello!',
-  });
-});
+import indexController from '../controllers/index.controller';
+
+router.get('/', indexController.welcomePage);
 
 export default router;
