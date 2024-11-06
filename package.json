@@ -17,7 +17,10 @@
     "helmet": "^8.0.0",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.0"
+    "mongoose": "^8.8.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-themes": "^1.4.3",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -25,6 +28,8 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.7",
     "dotenv": "^16.4.5",
     "env-schema": "^6.0.0",
     "nodemon": "^3.1.7",
