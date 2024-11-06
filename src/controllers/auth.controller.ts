@@ -35,8 +35,8 @@ class AuthController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { token } = req.body;
-      const result = await authService.refresh(token);
+      const { refreshToken } = req.body;
+      const result = await authService.refresh(refreshToken);
 
       res.status(200).json({
         result: result,
