@@ -10,11 +10,19 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "express": "^4.21.1"
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "helmet": "^8.0.0",
+    "http-errors": "^2.0.0"
   },
   "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
+    "dotenv": "^16.4.5",
+    "env-schema": "^6.0.0",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
