@@ -17,7 +17,8 @@ app
     }),
   )
   .use(helmet())
-  .use(compression());
+  .use(compression())
+  .use(express.json());
 
 app
   .use('/api', routes)

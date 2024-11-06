@@ -1,8 +1,11 @@
 import express, { Router } from 'express';
-import indexController from '../controllers/index.controller';
+
+import authRoutes from './auth.routes';
+import swaggerRoutes from './swagger.routes';
 
 const router: Router = express.Router();
 
-router.get('/', indexController.welcomePage);
+router.use('/swagger', swaggerRoutes);
+router.use('/auth', authRoutes);
 
 export default router;
