@@ -1,7 +1,3 @@
-# files
-.DS_Store
-.env
-
 # folders
 node_modules
 dist
