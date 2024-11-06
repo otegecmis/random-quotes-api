@@ -29,7 +29,11 @@ class AuthController {
     }
   }
 
-  async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async refresh(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
     try {
       const { token } = req.body;
       const result = await authService.refresh(token);
