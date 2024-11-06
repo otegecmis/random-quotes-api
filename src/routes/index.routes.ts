@@ -1,8 +1,7 @@
 import express, { Router } from 'express';
+import indexController from '../controllers/index.controller';
 
 const router: Router = express.Router();
-
-import indexController from '../controllers/index.controller';
 
 router.get('/', indexController.welcomePage);
 
