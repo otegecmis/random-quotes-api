@@ -2,16 +2,15 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
-// TODO: Fix this json import issue.
-// import packageJSON from "../package.json" assert { type: "json" };
+import packageJSON from "../../package.json";
 
 const swaggerSpec = swaggerJSDoc({
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'random-quotes-api',
-      description: '',
-      version: '',
+      title: packageJSON.name,
+      description: packageJSON.description,
+      version: packageJSON.version,
     },
     components: {
       securitySchemes: {
