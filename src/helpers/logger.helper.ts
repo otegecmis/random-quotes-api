@@ -1,6 +1,10 @@
+import config from '../config/index.config';
+
 class Logger {
   info(message: string) {
-    console.log(`[INFO]: ${message}`);
+    if (config.server.node_env == 'development') {
+      console.log(`[INFO]: ${message}`);
+    }
   }
 
   error(error: any, message?: string) {

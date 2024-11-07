@@ -2,17 +2,13 @@ import bcrypt from 'bcrypt';
 import createError from 'http-errors';
 
 import { IUser } from '../models/User';
+
 import tokenService from './token.service';
-import userRepository from '../repositories/user.repository';
+import usersService from './users.service';
 
 class AuthService {
   async signUp(email: string, password: string): Promise<object> {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await userRepository.createUser({
-      email,
-      password: hashedPassword,
-    } as IUser);
-
+    const user: IUser = await usersService.createUser(email, password);
     const result = {
       userID: user.id,
       email: user.email,
@@ -22,12 +18,7 @@ class AuthService {
   }
 
   async signIn(email: string, password: string): Promise<object> {
-    const user = await userRepository.getUserByEmail(email);
-
-    if (!user) {
-      throw createError.Unauthorized('Invalid email or password.');
-    }
-
+    const user: IUser = await usersService.getUserByEmail(email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
