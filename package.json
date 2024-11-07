@@ -1,7 +1,7 @@
 {
   "name": "random-quotes-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "A backend API built with Node.js, Express.js and TypeScript for fetching random quotes.",
   "scripts": {
     "start": "node dist/index.js",
     "dev": "nodemon",
