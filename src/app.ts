@@ -25,7 +25,7 @@ app
   .use((req: Request, res: Response, next: NextFunction) => {
     next(createError.NotFound("The page you're looking for doesn't exist."));
   })
-  .use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
+  .use((error: HttpError, req: Request, res: Response) => {
     const errorStatus: number = error.status || 500;
     const errorMessage: string = error.message || 'Internal Server Error';
 
