@@ -1,16 +1,11 @@
 import express, { Router } from 'express';
 
-import config from '../config/index.config';
-import { serve, setup } from '../config/swagger.config';
-
+import swaggerRoutes from './swagger.routes';
 import authRoutes from './auth.routes';
 
 const router: Router = express.Router();
 
-if (config.server.node_env === 'development') {
-  router.use('/', serve, setup);
-}
-
+router.use('/swagger', swaggerRoutes);
 router.use('/auth', authRoutes);
 
 export default router;
