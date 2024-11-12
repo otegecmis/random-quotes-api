@@ -3,6 +3,7 @@ import express from 'express';
 import quotesController from '../controllers/quotes.controller';
 
 import authCheck from '../middleware/auth-check.middleware';
+import rateLimiters from '../middleware/rate-limit.middleware';
 
 const router = express.Router();
 
@@ -32,7 +33,12 @@ const router = express.Router();
  *       201:
  *         description: Created
  */
-router.post('/', authCheck.isSignIn, quotesController.createQuotes);
+router.post(
+  '/',
+  rateLimiters.database,
+  authCheck.isSignIn,
+  quotesController.createQuotes,
+);
 
 /**
  * @swagger
@@ -56,7 +62,12 @@ router.post('/', authCheck.isSignIn, quotesController.createQuotes);
  *       200:
  *         description: Ok
  */
-router.get('/', authCheck.isSignIn, quotesController.getQuotes);
+router.get(
+  '/',
+  rateLimiters.common,
+  authCheck.isSignIn,
+  quotesController.getQuotes,
+);
 
 /**
  * @swagger
@@ -69,7 +80,7 @@ router.get('/', authCheck.isSignIn, quotesController.getQuotes);
  *       200:
  *         description: OK
  */
-router.get('/random', quotesController.randomQuotes);
+router.get('/random', rateLimiters.common, quotesController.randomQuotes);
 
 /**
  * @swagger
@@ -90,7 +101,12 @@ router.get('/random', quotesController.randomQuotes);
  *       200:
  *         description: Ok
  */
-router.get('/:id', authCheck.isSignIn, quotesController.getQuote);
+router.get(
+  '/:id',
+  rateLimiters.common,
+  authCheck.isSignIn,
+  quotesController.getQuote,
+);
 
 /**
  * @swagger
@@ -125,7 +141,12 @@ router.get('/:id', authCheck.isSignIn, quotesController.getQuote);
  *       200:
  *         description: Ok
  */
-router.put('/:id', authCheck.isSignIn, quotesController.updateQuote);
+router.put(
+  '/:id',
+  rateLimiters.database,
+  authCheck.isSignIn,
+  quotesController.updateQuote,
+);
 
 /**
  * @swagger
@@ -146,6 +167,11 @@ router.put('/:id', authCheck.isSignIn, quotesController.updateQuote);
  *       204:
  *         description: No Content
  */
-router.delete('/:id', authCheck.isSignIn, quotesController.deleteQuote);
+router.delete(
+  '/:id',
+  rateLimiters.database,
+  authCheck.isSignIn,
+  quotesController.deleteQuote,
+);
 
 export default router;
