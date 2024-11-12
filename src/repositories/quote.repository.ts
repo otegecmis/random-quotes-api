@@ -8,7 +8,24 @@ class QuoteRepository {
     try {
       return await Quote.create(quote);
     } catch (error: any) {
-      throw createError(500, `Unable to create the quote: ${error.message}`);
+      throw createError(500, `${error.message}`);
+    }
+  }
+
+  async getQuotes(currentPage: number, perPage: number) {
+    try {
+      const skip = (currentPage - 1) * perPage;
+      const quotes = await Quote.find().skip(skip).limit(perPage).exec();
+      const totalQuotes = await Quote.countDocuments();
+
+      return {
+        quotes,
+        totalQuotes,
+        totalPages: Math.ceil(totalQuotes / perPage),
+        currentPage,
+      };
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 
@@ -19,17 +36,53 @@ class QuoteRepository {
 
       return await Quote.findOne().skip(randomIndex);
     } catch (error: any) {
-      throw createError(
-        500,
-        `Unable to fetch a random quote: ${error.message}`,
-      );
+      throw createError(500, `${error.message}`);
+    }
+  }
+
+  async getQuote(id: string): Promise<IQuote | null> {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw createError(400, 'Invalid ID format.');
+      }
+
+      const quote = await Quote.findById(id).exec();
+
+      if (!quote) {
+        throw createError(404, 'Quote not found.');
+      }
+
+      return quote;
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
+    }
+  }
+
+  async updateQuote(id: string, quote: IQuote): Promise<IQuote | null> {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw createError(400, 'Invalid ID format');
+      }
+
+      const updatedQuote = await Quote.findByIdAndUpdate(id, quote, {
+        new: true,
+        runValidators: true,
+      }).exec();
+
+      if (!updatedQuote) {
+        throw createError(404, 'Quote not found.');
+      }
+
+      return updatedQuote;
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 
   async deleteQuote(id: string): Promise<void> {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw createError(400, 'Invalid ID format');
+        throw createError(400, 'Invalid ID format.');
       }
 
       const result = await Quote.findByIdAndDelete(id);
@@ -38,7 +91,7 @@ class QuoteRepository {
         throw createError(404, 'Quote not found.');
       }
     } catch (error: any) {
-      throw createError(500, `Unable to delete the quote: ${error.message}`);
+      throw createError(500, `${error.message}`);
     }
   }
 }

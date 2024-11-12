@@ -6,8 +6,20 @@ class QuotesService {
     return quoteRepository.createQuote(quote);
   }
 
+  async getQuotes(currentPage: number, perPage: number) {
+    return quoteRepository.getQuotes(currentPage, perPage);
+  }
+
   async getRandomQuote(): Promise<IQuote | null> {
     return await quoteRepository.getRandomQuote();
+  }
+
+  async getQuote(id: string) {
+    return await quoteRepository.getQuote(id);
+  }
+
+  async updateQuote(id: string, quote: IQuote) {
+    return await quoteRepository.updateQuote(id, quote);
   }
 
   async deleteQuote(id: string): Promise<void | null> {
