@@ -2,6 +2,8 @@ import express from 'express';
 
 import authController from '../controllers/auth.controller';
 
+import rateLimiters from '../middleware/rate-limit.middleware';
+
 const router = express.Router();
 
 /**
@@ -28,7 +30,7 @@ const router = express.Router();
  *       201:
  *         description: Created
  */
-router.post('/signup', authController.signUp);
+router.post('/signup', rateLimiters.auth, authController.signUp);
 
 /**
  * @swagger
@@ -54,7 +56,7 @@ router.post('/signup', authController.signUp);
  *       200:
  *         description: OK
  */
-router.post('/signin', authController.signIn);
+router.post('/signin', rateLimiters.auth, authController.signIn);
 
 /**
  * @swagger
@@ -78,6 +80,6 @@ router.post('/signin', authController.signIn);
  *       200:
  *         description: OK
  */
-router.put('/refresh', authController.refresh);
+router.put('/refresh', rateLimiters.auth, authController.refresh);
 
 export default router;
