@@ -3,6 +3,11 @@ import { NextFunction, Request, Response } from 'express';
 import { IQuote } from '../models/Quote';
 import quotesService from '../services/quotes.service';
 
+import {
+  createQuoteValidationSchema,
+  deleteQuoteValidationSchema,
+} from '../validations/quotes.validation';
+
 class QuotesController {
   async createQuotes(
     req: Request,
@@ -10,6 +15,18 @@ class QuotesController {
     next: NextFunction,
   ): Promise<void> {
     try {
+      const { error } = createQuoteValidationSchema.validate(req.body);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
       const { quote, author } = req.body;
 
       const result = await quotesService.createQuote({
@@ -47,6 +64,18 @@ class QuotesController {
     next: NextFunction,
   ): Promise<void> {
     try {
+      const { error } = deleteQuoteValidationSchema.validate(req.params);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
       const { id } = req.params;
       await quotesService.deleteQuote(id);
 
