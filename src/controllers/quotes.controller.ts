@@ -159,7 +159,7 @@ class QuotesController {
     }
   }
 
-  async deleteQuotes(
+  async deleteQuote(
     req: Request,
     res: Response,
     next: NextFunction,

@@ -134,6 +134,6 @@ router.put('/:id', quotesController.updateQuote);
  *       204:
  *         description: No Content
  */
-router.delete('/:id', quotesController.deleteQuotes);
+router.delete('/:id', quotesController.deleteQuote);
 
 export default router;
