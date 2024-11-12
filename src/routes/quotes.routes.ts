@@ -2,6 +2,8 @@ import express from 'express';
 
 import quotesController from '../controllers/quotes.controller';
 
+import authCheck from '../middleware/auth-check.middleware';
+
 const router = express.Router();
 
 /**
@@ -10,6 +12,8 @@ const router = express.Router();
  *   post:
  *     summary: Create Quote
  *     tags: [Quotes]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -28,7 +32,7 @@ const router = express.Router();
  *       201:
  *         description: Created
  */
-router.post('/', quotesController.createQuotes);
+router.post('/', authCheck.isSignIn, quotesController.createQuotes);
 
 /**
  * @swagger
@@ -37,6 +41,8 @@ router.post('/', quotesController.createQuotes);
  *     summary: Get Quotes
  *     description:
  *     tags: [Quotes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: currentPage
@@ -50,7 +56,7 @@ router.post('/', quotesController.createQuotes);
  *       200:
  *         description: Ok
  */
-router.get('/', quotesController.getQuotes);
+router.get('/', authCheck.isSignIn, quotesController.getQuotes);
 
 /**
  * @swagger
@@ -72,6 +78,8 @@ router.get('/random', quotesController.randomQuotes);
  *     summary: Get Quote
  *     description:
  *     tags: [Quotes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -82,7 +90,7 @@ router.get('/random', quotesController.randomQuotes);
  *       200:
  *         description: Ok
  */
-router.get('/:id', quotesController.getQuote);
+router.get('/:id', authCheck.isSignIn, quotesController.getQuote);
 
 /**
  * @swagger
@@ -91,6 +99,8 @@ router.get('/:id', quotesController.getQuote);
  *     summary: Update Quote
  *     description:
  *     tags: [Quotes]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -115,7 +125,7 @@ router.get('/:id', quotesController.getQuote);
  *       200:
  *         description: Ok
  */
-router.put('/:id', quotesController.updateQuote);
+router.put('/:id', authCheck.isSignIn, quotesController.updateQuote);
 
 /**
  * @swagger
@@ -124,6 +134,8 @@ router.put('/:id', quotesController.updateQuote);
  *     summary: Delete Quote
  *     description:
  *     tags: [Quotes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -134,6 +146,6 @@ router.put('/:id', quotesController.updateQuote);
  *       204:
  *         description: No Content
  */
-router.delete('/:id', quotesController.deleteQuote);
+router.delete('/:id', authCheck.isSignIn, quotesController.deleteQuote);
 
 export default router;
