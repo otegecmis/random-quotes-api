@@ -10,6 +10,6 @@
     "outDir": "./dist",
     "typeRoots": ["./node_modules/@types", "./@types"]
   },
-  "include": ["src/**/*"],
+  "include": ["/**/*"],
   "exclude": ["node_modules"]
 }
