@@ -3,7 +3,7 @@ import createError from 'http-errors';
 
 import tokenService from '../services/token.service';
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
   payload?: any;
 }
 
