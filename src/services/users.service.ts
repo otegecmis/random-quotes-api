@@ -36,11 +36,11 @@ class UsersService {
       newPassword,
     );
 
-    if (isUpdated) {
-      return { message: 'Password updated successfully.' };
+    if (!isUpdated) {
+      throw createError(400, 'Failed to update password.');
     }
 
-    throw new Error('Failed to update password.');
+    return { message: 'Password updated successfully.' };
   }
 
   async updateEmail(userID: string, oldEmail: string, newEmail: string) {
@@ -50,21 +50,21 @@ class UsersService {
       newEmail,
     );
 
-    if (isUpdated) {
-      return { message: 'Email updated successfully.' };
+    if (!isUpdated) {
+      throw createError(400, 'Failed to update email.');
     }
 
-    throw new Error('Failed to update email.');
+    return { message: 'Email updated successfully.' };
   }
 
   async updateRole(userID: string, role: string) {
     const isUpdated = await userRepository.updateRole(userID, role);
 
-    if (isUpdated) {
-      return { message: 'Role updated successfully.' };
+    if (!isUpdated) {
+      throw createError(400, 'Failed to update role.');
     }
 
-    throw new Error('Failed to update role.');
+    return { message: 'Role updated successfully.' };
   }
 }
 
