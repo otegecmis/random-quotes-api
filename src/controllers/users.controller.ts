@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
+import createError from 'http-errors';
 
 import usersService from '../services/users.service';
 
+import { AuthRequest } from '../middleware/auth-check.middleware'; 
 import {
   updateEmailValidationSchema,
   updatePasswordValidationSchema,
@@ -10,7 +12,7 @@ import {
 
 class UsersController {
   async updatePassword(
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
@@ -32,7 +34,11 @@ class UsersController {
 
       const { oldPassword, newPassword } = req.body;
       const { id } = req.params;
-      const authID = req.params.id;
+      const authID = req.payload.aud
+      
+      if (id !== authID) {
+        return next(createError.Unauthorized());
+      }
 
       const result = await usersService.updatePassword(id, oldPassword, newPassword);
 
@@ -47,7 +53,7 @@ class UsersController {
   }
 
   async updateEmail(
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
@@ -69,7 +75,11 @@ class UsersController {
 
       const { oldEmail, newEmail } = req.body;
       const { id } = req.params;
-      const authID = req.params.id;
+      const authID = req.payload.aud
+      
+      if (id !== authID) {
+        return next(createError.Unauthorized());
+      }
 
       const result = await usersService.updateEmail(id, oldEmail, newEmail);
 
