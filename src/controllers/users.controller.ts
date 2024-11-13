@@ -32,12 +32,14 @@ class UsersController {
 
       const { oldPassword, newPassword } = req.body;
       const { id } = req.params;
-      const authID = req.params.userID;
+      const authID = req.params.id;
 
-      const result = usersService.updatePassword(id, oldPassword, newPassword);
+      const result = await usersService.updatePassword(id, oldPassword, newPassword);
 
       res.status(200).json({
-        result,
+        result: {
+            message: result.message
+        }
       });
     } catch (error) {
       next(error);
@@ -67,12 +69,14 @@ class UsersController {
 
       const { oldEmail, newEmail } = req.body;
       const { id } = req.params;
-      const authID = req.params.userID;
+      const authID = req.params.id;
 
-      const result = usersService.updateEmail(id, oldEmail, newEmail);
+      const result = await usersService.updateEmail(id, oldEmail, newEmail);
 
       res.status(200).json({
-        result,
+        result: {
+            message: result.message
+        }
       });
     } catch (error) {
       next(error);
@@ -103,10 +107,12 @@ class UsersController {
       const { role } = req.body;
       const { id } = req.params;
 
-      const result = usersService.updateRole(id, role);
+      const result = await usersService.updateRole(id, role);
 
       res.status(200).json({
-        result,
+        result: {
+            message: result.message
+        }
       });
     } catch (error) {
       next(error);
