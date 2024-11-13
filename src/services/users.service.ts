@@ -24,6 +24,48 @@ class UsersService {
 
     return user;
   }
+
+  async updatePassword(
+    userID: string,
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    const isUpdated = await userRepository.updatePassword(
+      userID,
+      oldPassword,
+      newPassword,
+    );
+
+    if (!isUpdated) {
+      throw createError(400, 'Failed to update password.');
+    }
+
+    return { message: 'Password updated successfully.' };
+  }
+
+  async updateEmail(userID: string, oldEmail: string, newEmail: string) {
+    const isUpdated = await userRepository.updateEmail(
+      userID,
+      oldEmail,
+      newEmail,
+    );
+
+    if (!isUpdated) {
+      throw createError(400, 'Failed to update email.');
+    }
+
+    return { message: 'Email updated successfully.' };
+  }
+
+  async updateRole(userID: string, role: string) {
+    const isUpdated = await userRepository.updateRole(userID, role);
+
+    if (!isUpdated) {
+      throw createError(400, 'Failed to update role.');
+    }
+
+    return { message: 'Role updated successfully.' };
+  }
 }
 
 export default new UsersService();

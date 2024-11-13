@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import bcrypt from 'bcrypt';
 
 import User, { IUser } from '../models/User';
 
@@ -11,7 +12,7 @@ class UserRepository {
         throw createError(400, 'Please use a different email.');
       }
 
-      throw createError(500, 'Unable to create the user at the moment.');
+      throw createError(500);
     }
   }
 
@@ -19,7 +20,76 @@ class UserRepository {
     try {
       return await User.findOne({ email });
     } catch (error) {
-      throw createError(500, 'Unable to fetch the user at the moment.');
+      throw createError(500);
+    }
+  }
+
+  async updatePassword(
+    userID: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<boolean> {
+    try {
+      const user = await User.findById(userID);
+
+      if (!user) {
+        throw createError(404, 'User not found.');
+      }
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isMatch) {
+        throw createError(400, 'Incorrect current password.');
+      }
+
+      user.password = await bcrypt.hash(newPassword, 10);
+      await user.save();
+
+      return true;
+    } catch (error) {
+      throw createError(500, 'Error updating password.');
+    }
+  }
+
+  async updateEmail(
+    userID: string,
+    oldEmail: string,
+    newEmail: string,
+  ): Promise<boolean> {
+    try {
+      const user = await User.findById(userID);
+
+      if (!user) {
+        throw createError(404, 'User not found.');
+      }
+
+      if (user.email !== oldEmail) {
+        throw createError(400, 'Incorrect current email.');
+      }
+
+      user.email = newEmail;
+      await user.save();
+
+      return true;
+    } catch (error) {
+      throw createError(500, 'Error updating email.');
+    }
+  }
+
+  async updateRole(userID: string, role: string): Promise<boolean> {
+    try {
+      const user = await User.findById(userID);
+
+      if (!user) {
+        throw createError(404, 'User not found.');
+      }
+
+      user.role = role;
+      await user.save();
+
+      return true;
+    } catch (error) {
+      throw createError(500, 'Error updating role.');
     }
   }
 }
