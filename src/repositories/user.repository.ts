@@ -75,6 +75,23 @@ class UserRepository {
       throw createError(500, 'Error updating email.');
     }
   }
+
+  async updateRole(userID: string, role: string): Promise<boolean> {
+    try {
+      const user = await User.findById(userID);
+
+      if (!user) {
+        throw createError(404, 'User not found.');
+      }
+
+      user.role = role;
+      await user.save();
+
+      return true;
+    } catch (error) {
+      throw createError(500, 'Error updating role.');
+    }
+  }
 }
 
 export default new UserRepository();
