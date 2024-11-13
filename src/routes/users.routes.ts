@@ -67,13 +67,13 @@ router.put(
  *           schema:
  *             type: object
  *             properties:
+ *               oldEmail:
+ *                 type: string
  *               newEmail:
  *                 type: string
- *               password:
- *                 type: string
  *             example:
- *               newEmail: "example@domain.com"
- *               password: "qweasd"
+ *               oldEmail: "namesurname@domain.com"
+ *               newEmail: "surnamename@domain.com"
  *     responses:
  *       200:
  *         description: Ok
