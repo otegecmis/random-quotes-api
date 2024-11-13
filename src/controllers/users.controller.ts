@@ -103,9 +103,7 @@ class UsersController {
       const { role } = req.body;
       const { id } = req.params;
 
-      const result = {
-        message: 'WIP.',
-      };
+      const result = usersService.updateRole(id, role);
 
       res.status(200).json({
         result,
