@@ -3,7 +3,7 @@ import createError from 'http-errors';
 
 import usersService from '../services/users.service';
 
-import { AuthRequest } from '../middleware/auth-check.middleware'; 
+import { AuthRequest } from '../middleware/auth-check.middleware';
 import {
   updateEmailValidationSchema,
   updatePasswordValidationSchema,
@@ -34,18 +34,22 @@ class UsersController {
 
       const { oldPassword, newPassword } = req.body;
       const { id } = req.params;
-      const authID = req.payload.aud
-      
+      const authID = req.payload.aud;
+
       if (id !== authID) {
         return next(createError.Unauthorized());
       }
 
-      const result = await usersService.updatePassword(id, oldPassword, newPassword);
+      const result = await usersService.updatePassword(
+        id,
+        oldPassword,
+        newPassword,
+      );
 
       res.status(200).json({
         result: {
-            message: result.message
-        }
+          message: result.message,
+        },
       });
     } catch (error) {
       next(error);
@@ -75,8 +79,8 @@ class UsersController {
 
       const { oldEmail, newEmail } = req.body;
       const { id } = req.params;
-      const authID = req.payload.aud
-      
+      const authID = req.payload.aud;
+
       if (id !== authID) {
         return next(createError.Unauthorized());
       }
@@ -85,8 +89,8 @@ class UsersController {
 
       res.status(200).json({
         result: {
-            message: result.message
-        }
+          message: result.message,
+        },
       });
     } catch (error) {
       next(error);
@@ -121,8 +125,8 @@ class UsersController {
 
       res.status(200).json({
         result: {
-            message: result.message
-        }
+          message: result.message,
+        },
       });
     } catch (error) {
       next(error);
