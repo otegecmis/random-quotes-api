@@ -24,6 +24,38 @@ class UsersService {
 
     return user;
   }
+
+  async updatePassword(
+    userID: string,
+    oldPassword: string,
+    newPassword: string,
+  ) {
+    const isUpdated = await userRepository.updatePassword(
+      userID,
+      oldPassword,
+      newPassword,
+    );
+
+    if (isUpdated) {
+      return { message: 'Password updated successfully.' };
+    }
+
+    throw new Error('Failed to update password.');
+  }
+
+  async updateEmail(userID: string, oldEmail: string, newEmail: string) {
+    const isUpdated = await userRepository.updateEmail(
+      userID,
+      oldEmail,
+      newEmail,
+    );
+
+    if (isUpdated) {
+      return { message: 'Email updated successfully.' };
+    }
+
+    throw new Error('Failed to update email.');
+  }
 }
 
 export default new UsersService();
