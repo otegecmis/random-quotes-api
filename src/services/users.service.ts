@@ -56,6 +56,16 @@ class UsersService {
 
     throw new Error('Failed to update email.');
   }
+
+  async updateRole(userID: string, role: string) {
+    const isUpdated = await userRepository.updateRole(userID, role);
+
+    if (isUpdated) {
+      return { message: 'Role updated successfully.' };
+    }
+
+    throw new Error('Failed to update role.');
+  }
 }
 
 export default new UsersService();
