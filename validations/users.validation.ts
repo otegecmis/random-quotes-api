@@ -16,3 +16,7 @@ export const updateRoleValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
   role: Joi.string().required(),
 });
+
+export const deactivateValidationSchema = Joi.object({
+  id: Joi.string().hex().length(24).required(),
+});

@@ -92,6 +92,23 @@ class UserRepository {
       throw createError(500, 'Error updating role.');
     }
   }
+
+  async deactivateProfile(userID: string): Promise<boolean> {
+    try {
+      const user = await User.findById(userID);
+
+      if (!user) {
+        throw createError(404, 'User not found.');
+      }
+
+      user.status = false;
+      await user.save();
+
+      return true;
+    } catch (error) {
+      throw createError(500, 'Error updating status.');
+    }
+  }
 }
 
 export default new UserRepository();
