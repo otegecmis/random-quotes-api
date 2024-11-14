@@ -8,31 +8,6 @@ import {
 } from '../validations/auth.validation';
 
 class AuthController {
-  async signUp(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const { error } = signUpValidationSchema.validate(req.body);
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-
-        return;
-      }
-
-      const { email, password } = req.body;
-      const result = await authService.signUp(email, password);
-
-      res.status(201).json({
-        result: result,
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
   async signIn(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { error } = signInValidationSchema.validate(req.body);

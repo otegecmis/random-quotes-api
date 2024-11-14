@@ -5,13 +5,45 @@ import usersService from '../services/users.service';
 
 import { AuthRequest } from '../middleware/auth-check.middleware';
 import {
-  updateEmailValidationSchema,
+  createUserValidationSchema,
   updatePasswordValidationSchema,
-  updateRoleValidationSchema,
-  deactivateValidationSchema,
+  updateEmailValidationSchema,
+  deactivateAccountValidationSchema,
 } from '../validations/users.validation';
 
 class UsersController {
+  async createUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { error } = createUserValidationSchema.validate(req.body);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
+      const { email, password } = req.body;
+      const result = await usersService.createUser(email, password);
+
+      res.status(201).json({
+        result: {
+          id: result.id,
+          email: result.email
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updatePassword(
     req: AuthRequest,
     res: Response,
@@ -98,49 +130,13 @@ class UsersController {
     }
   }
 
-  async updateRole(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> {
-    try {
-      const { error } = updateRoleValidationSchema.validate({
-        ...req.params,
-        ...req.body,
-      });
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-
-        return;
-      }
-
-      const { role } = req.body;
-      const { id } = req.params;
-
-      const result = await usersService.updateRole(id, role);
-
-      res.status(200).json({
-        result: {
-          message: result.message,
-        },
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async deactivateProfile(
+  async deactivateAccount(
     req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = deactivateValidationSchema.validate(req.params);
+      const { error } = deactivateAccountValidationSchema.validate(req.params);
 
       if (error) {
         res.status(400).json({
@@ -159,7 +155,7 @@ class UsersController {
         return next(createError.Unauthorized());
       }
 
-      const result = await usersService.deactivateProfile(id);
+      const result = await usersService.deactivateAccount(id);
 
       res.status(200).json({
         result: {

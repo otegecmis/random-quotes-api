@@ -1,5 +1,10 @@
 import Joi from 'joi';
 
+export const createUserValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
+
 export const updatePasswordValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
   oldPassword: Joi.string().email().required(),
@@ -12,11 +17,6 @@ export const updateEmailValidationSchema = Joi.object({
   newEmail: Joi.string().email().required(),
 });
 
-export const updateRoleValidationSchema = Joi.object({
-  id: Joi.string().hex().length(24).required(),
-  role: Joi.string().required(),
-});
-
-export const deactivateValidationSchema = Joi.object({
+export const deactivateAccountValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
 });

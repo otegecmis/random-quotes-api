@@ -93,7 +93,7 @@ class UserRepository {
     }
   }
 
-  async deactivateProfile(userID: string): Promise<boolean> {
+  async deactivateAccount(userID: string): Promise<boolean> {
     try {
       const user = await User.findById(userID);
 

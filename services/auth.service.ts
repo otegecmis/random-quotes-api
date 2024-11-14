@@ -7,16 +7,6 @@ import tokenService from './token.service';
 import usersService from './users.service';
 
 class AuthService {
-  async signUp(email: string, password: string): Promise<object> {
-    const user: IUser = await usersService.createUser(email, password);
-    const result = {
-      userID: user.id,
-      email: user.email,
-    };
-
-    return result;
-  }
-
   async signIn(email: string, password: string): Promise<object> {
     const user: IUser = await usersService.getUserByEmail(email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
