@@ -9,9 +9,35 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /api/users:
+ *   post:
+ *     summary: create user
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             example:
+ *               email: "namesurname@domain.com"
+ *               password: "123456"
+ *     responses:
+ *       201:
+ *         description: Created
+ */
+router.post('/', rateLimiters.database, usersController.createUser);
+
+/**
+ * @swagger
  * /api/users/{id}/password:
  *   put:
- *     summary:
+ *     summary: update password
  *     tags: [users]
  *     security:
  *       - bearerAuth: []
@@ -50,7 +76,7 @@ router.put(
  * @swagger
  * /api/users/{id}/email:
  *   put:
- *     summary:
+ *     summary: update e-mail
  *     tags: [users]
  *     security:
  *       - bearerAuth: []
@@ -87,45 +113,9 @@ router.put(
 
 /**
  * @swagger
- * /api/users/{id}/role:
- *   put:
- *     summary:
- *     tags: [users]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               role:
- *                 type: string
- *             example:
- *               role: "admin"
- *     responses:
- *       200:
- *         description: Ok
- */
-router.put(
-  '/:id/role',
-  rateLimiters.database,
-  authCheck.isSignIn,
-  usersController.updateRole,
-);
-
-/**
- * @swagger
  * /api/users/{id}:
  *   delete:
- *     summary: Deactivate Account
+ *     summary: deactivate account
  *     tags: [users]
  *     security:
  *       - bearerAuth: []
@@ -143,7 +133,7 @@ router.delete(
   '/:id',
   rateLimiters.database,
   authCheck.isSignIn,
-  usersController.deactivateProfile,
+  usersController.deactivateAccount,
 );
 
 export default router;

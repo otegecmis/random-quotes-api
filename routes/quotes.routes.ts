@@ -11,8 +11,8 @@ const router = express.Router();
  * @swagger
  * /api/quotes:
  *   post:
- *     summary: Create Quote
- *     tags: [Quotes]
+ *     summary: create quote
+ *     tags: [quotes]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -44,9 +44,9 @@ router.post(
  * @swagger
  * /api/quotes:
  *   get:
- *     summary: Get Quotes
+ *     summary: get quotes
  *     description:
- *     tags: [Quotes]
+ *     tags: [quotes]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -73,9 +73,9 @@ router.get(
  * @swagger
  * /api/quotes/random:
  *   get:
- *     summary: Random Quote
+ *     summary: get random quote
  *     description:
- *     tags: [Quotes]
+ *     tags: [quotes]
  *     responses:
  *       200:
  *         description: OK
@@ -86,9 +86,9 @@ router.get('/random', rateLimiters.common, quotesController.randomQuotes);
  * @swagger
  * /api/quotes/{id}:
  *   get:
- *     summary: Get Quote
+ *     summary: get quote
  *     description:
- *     tags: [Quotes]
+ *     tags: [quotes]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -112,9 +112,9 @@ router.get(
  * @swagger
  * /api/quotes/{id}:
  *   put:
- *     summary: Update Quote
+ *     summary: update quote
  *     description:
- *     tags: [Quotes]
+ *     tags: [quotes]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -152,9 +152,9 @@ router.put(
  * @swagger
  * /api/quotes/{id}:
  *   delete:
- *     summary: Delete Quote
+ *     summary: delete quote
  *     description:
- *     tags: [Quotes]
+ *     tags: [quotes]
  *     security:
  *       - bearerAuth: []
  *     parameters:
