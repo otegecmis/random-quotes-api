@@ -8,6 +8,7 @@ import {
   updateEmailValidationSchema,
   updatePasswordValidationSchema,
   updateRoleValidationSchema,
+  deactivateValidationSchema,
 } from '../validations/users.validation';
 
 class UsersController {
@@ -122,6 +123,43 @@ class UsersController {
       const { id } = req.params;
 
       const result = await usersService.updateRole(id, role);
+
+      res.status(200).json({
+        result: {
+          message: result.message,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deactivateProfile(
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { error } = deactivateValidationSchema.validate(req.params);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
+      const { id } = req.params;
+      const authID = req.payload.aud;
+
+      if (id !== authID) {
+        return next(createError.Unauthorized());
+      }
+
+      const result = await usersService.deactivateProfile(id);
 
       res.status(200).json({
         result: {

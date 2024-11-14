@@ -66,6 +66,16 @@ class UsersService {
 
     return { message: 'Role updated successfully.' };
   }
+
+  async deactivateProfile(userID: string) {
+    const isDeactivated = await userRepository.deactivateProfile(userID);
+
+    if (!isDeactivated) {
+      throw createError(400, 'Failed to deactivate role.');
+    }
+
+    return { message: 'Profile deactivated successfully.' };
+  }
 }
 
 export default new UsersService();

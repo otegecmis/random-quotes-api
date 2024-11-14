@@ -4,6 +4,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   role?: string;
+  status?: Boolean;
 }
 
 const UserSchema: Schema = new Schema({
@@ -19,6 +20,10 @@ const UserSchema: Schema = new Schema({
   role: {
     type: String,
     default: 'User',
+  },
+  status: {
+    type: Boolean,
+    default: true,
   },
 });
 

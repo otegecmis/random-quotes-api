@@ -12,7 +12,7 @@ const router = express.Router();
  * /api/users/{id}/password:
  *   put:
  *     summary:
- *     tags: [Users]
+ *     tags: [users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -51,7 +51,7 @@ router.put(
  * /api/users/{id}/email:
  *   put:
  *     summary:
- *     tags: [Users]
+ *     tags: [users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -90,7 +90,7 @@ router.put(
  * /api/users/{id}/role:
  *   put:
  *     summary:
- *     tags: [Users]
+ *     tags: [users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -119,6 +119,31 @@ router.put(
   rateLimiters.database,
   authCheck.isSignIn,
   usersController.updateRole,
+);
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   delete:
+ *     summary: Deactivate Account
+ *     tags: [users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Ok
+ */
+router.delete(
+  '/:id',
+  rateLimiters.database,
+  authCheck.isSignIn,
+  usersController.deactivateProfile,
 );
 
 export default router;
