@@ -7,7 +7,7 @@ import tokenService from './token.service';
 import usersService from './users.service';
 
 class AuthService {
-  async signIn(email: string, password: string): Promise<object> {
+  async login(email: string, password: string): Promise<object> {
     const user: IUser = await usersService.getUserByEmail(email);
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -29,7 +29,7 @@ class AuthService {
     return result;
   }
 
-  async refresh(token: string): Promise<object> {
+  async refreshTokens(token: string): Promise<object> {
     const userID: string = await tokenService.verifyRefreshToken(token);
     const access_token: string = await tokenService.createAccessToken(userID);
     const refresh_token: string = await tokenService.createRefreshToken(userID);

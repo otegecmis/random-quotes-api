@@ -35,6 +35,55 @@ router.post('/', rateLimiters.database, usersController.createUser);
 
 /**
  * @swagger
+ * /api/users/login:
+ *   post:
+ *     summary: login
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             example:
+ *               email: "namesurname@domain.com"
+ *               password: "123456"
+ *     responses:
+ *       201:
+ *         description: Created
+ */
+router.post('/login', rateLimiters.auth, usersController.login);
+
+/**
+ * @swagger
+ * /api/users/refresh-tokens:
+ *   put:
+ *     summary: refresh tokens
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *             example:
+ *               refreshToken: ""
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
+
+/**
+ * @swagger
  * /api/users/{id}/password:
  *   put:
  *     summary: update password
