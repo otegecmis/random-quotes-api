@@ -1,5 +1,5 @@
 import createError from 'http-errors';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 import User, { IUser } from '../models/User';
 
