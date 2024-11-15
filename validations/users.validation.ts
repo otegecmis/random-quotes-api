@@ -5,6 +5,17 @@ export const createUserValidationSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+export const loginValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
+
+export const refreshTokensValidationSchema = Joi.object({
+  refreshToken: Joi.string().regex(
+    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/,
+  ),
+});
+
 export const updatePasswordValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
   oldPassword: Joi.string().email().required(),
