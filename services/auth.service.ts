@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import createError from 'http-errors';
 
 import { IUser } from '../models/User';
