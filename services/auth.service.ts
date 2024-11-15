@@ -20,6 +20,12 @@ class AuthService {
       user.id,
     );
 
+    if (user.status === false) {
+      throw createError.Forbidden(
+        'Your profile is currently deactivated. Please reactivate your account to continue.',
+      );
+    }
+
     const result = {
       userID: user.id,
       access_token,
