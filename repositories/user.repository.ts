@@ -12,101 +12,71 @@ class UserRepository {
         throw createError(400, 'Please use a different email.');
       }
 
-      throw createError(500);
+      throw createError(500, `${error.message}`);
+    }
+  }
+
+  async getUserByID(id: string): Promise<IUser | null> {
+    try {
+      return await User.findById(id).exec();
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 
   async getUserByEmail(email: string): Promise<IUser | null> {
     try {
       return await User.findOne({ email });
-    } catch (error) {
-      throw createError(500);
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 
-  async updatePassword(
-    userID: string,
-    oldPassword: string,
-    newPassword: string,
-  ): Promise<boolean> {
+  async updatePassword(userID: string, password: string): Promise<IUser> {
     try {
-      const user = await User.findById(userID);
+      const getUser = await this.getUserByID(userID);
 
-      if (!user) {
+      if (!getUser) {
         throw createError(404, 'User not found.');
       }
 
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      getUser.password = await bcrypt.hash(password, 10);
 
-      if (!isMatch) {
-        throw createError(400, 'Incorrect current password.');
-      }
-
-      user.password = await bcrypt.hash(newPassword, 10);
-      await user.save();
-
-      return true;
-    } catch (error) {
-      throw createError(500, 'Error updating password.');
+      return getUser.save();
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 
-  async updateEmail(
-    userID: string,
-    oldEmail: string,
-    newEmail: string,
-  ): Promise<boolean> {
+  async updateEmail(userID: string, email: string): Promise<IUser> {
     try {
-      const user = await User.findById(userID);
+      const getUser = await this.getUserByID(userID);
 
-      if (!user) {
+      if (!getUser) {
         throw createError(404, 'User not found.');
       }
 
-      if (user.email !== oldEmail) {
-        throw createError(400, 'Incorrect current email.');
-      }
+      getUser.email = email;
 
-      user.email = newEmail;
-      await user.save();
-
-      return true;
-    } catch (error) {
-      throw createError(500, 'Error updating email.');
+      return await getUser.save();
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 
-  async updateRole(userID: string, role: string): Promise<boolean> {
+  async deactivateAccount(userID: string): Promise<IUser> {
     try {
-      const user = await User.findById(userID);
+      const getUser = await this.getUserByID(userID);
 
-      if (!user) {
+      if (!getUser) {
         throw createError(404, 'User not found.');
       }
 
-      user.role = role;
-      await user.save();
+      getUser.status = false;
 
-      return true;
-    } catch (error) {
-      throw createError(500, 'Error updating role.');
-    }
-  }
-
-  async deactivateAccount(userID: string): Promise<boolean> {
-    try {
-      const user = await User.findById(userID);
-
-      if (!user) {
-        throw createError(404, 'User not found.');
-      }
-
-      user.status = false;
-      await user.save();
-
-      return true;
-    } catch (error) {
-      throw createError(500, 'Error updating status.');
+      return getUser.save();
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
     }
   }
 }

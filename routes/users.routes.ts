@@ -20,11 +20,17 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
  *               email:
  *                 type: string
  *               password:
  *                 type: string
  *             example:
+ *               name: "Name"
+ *               surname: "Surname"
  *               email: "namesurname@domain.com"
  *               password: "123456"
  *     responses:
@@ -105,11 +111,11 @@ router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
  *             properties:
  *               oldPassword:
  *                 type: string
- *               newPassword:
+ *               password:
  *                 type: string
  *             example:
  *               oldPassword: "123456"
- *               newPassword: "qweasd"
+ *               password: "987654"
  *     responses:
  *       200:
  *         description: Ok
@@ -144,11 +150,11 @@ router.put(
  *             properties:
  *               oldEmail:
  *                 type: string
- *               newEmail:
+ *               email:
  *                 type: string
  *             example:
  *               oldEmail: "namesurname@domain.com"
- *               newEmail: "surnamename@domain.com"
+ *               email: "surnamename@domain.com"
  *     responses:
  *       200:
  *         description: Ok

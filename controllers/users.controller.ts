@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
 
+import { IUser } from '../models/User';
 import usersService from '../services/users.service';
 import authService from '../services/auth.service';
 
@@ -33,14 +34,16 @@ class UsersController {
         return;
       }
 
-      const { email, password } = req.body;
-      const result = await usersService.createUser(email, password);
+      const { name, surname, email, password } = req.body;
+      const result = await usersService.createUser({
+        name,
+        surname,
+        email,
+        password,
+      } as IUser);
 
       res.status(201).json({
-        result: {
-          id: result.id,
-          email: result.email,
-        },
+        result,
       });
     } catch (error) {
       next(error);
@@ -122,7 +125,7 @@ class UsersController {
         return;
       }
 
-      const { oldPassword, newPassword } = req.body;
+      const { oldPassword, password } = req.body;
       const { id } = req.params;
       const authID = req.payload.aud;
 
@@ -133,13 +136,11 @@ class UsersController {
       const result = await usersService.updatePassword(
         id,
         oldPassword,
-        newPassword,
+        password,
       );
 
       res.status(200).json({
-        result: {
-          message: result.message,
-        },
+        result,
       });
     } catch (error) {
       next(error);
@@ -167,7 +168,7 @@ class UsersController {
         return;
       }
 
-      const { oldEmail, newEmail } = req.body;
+      const { oldEmail, email } = req.body;
       const { id } = req.params;
       const authID = req.payload.aud;
 
@@ -175,12 +176,10 @@ class UsersController {
         return next(createError.Unauthorized());
       }
 
-      const result = await usersService.updateEmail(id, oldEmail, newEmail);
+      const result = await usersService.updateEmail(id, oldEmail, email);
 
       res.status(200).json({
-        result: {
-          message: result.message,
-        },
+        result,
       });
     } catch (error) {
       next(error);
@@ -215,9 +214,7 @@ class UsersController {
       const result = await usersService.deactivateAccount(id);
 
       res.status(200).json({
-        result: {
-          message: result.message,
-        },
+        result,
       });
     } catch (error) {
       next(error);
