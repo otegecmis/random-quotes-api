@@ -10,22 +10,16 @@
 git clone https://github.com/otegecmis/random-quotes-api.git && cd random-quotes-api
 ```
 
-2. Generate `.env` file 
+2. Generate `.env`
 
 ```sh
 npm run generate-env
 ```
 
-3. Start the application with Docker
+If you want to quickly check out the project, the generated default variables are enough (for testing purposes only). For more options, review the `.env.example` file.
+
+3. Start
 
 ```sh
 docker-compose up --build -d
 ```
-
-### 2. Documentation
-
-#### 1.Swagger
-
-To access `Swagger` documentation, make sure the `NODE_ENV` in the `.env` file is set to `development`.
-
-Then, you can access it via `api/swagger`.
