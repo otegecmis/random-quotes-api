@@ -5,76 +5,108 @@ import { IUser } from '../models/User';
 import userRepository from '../repositories/user.repository';
 
 class UsersService {
-  async createUser(email: string, password: string): Promise<IUser> {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await userRepository.createUser({
-      email,
-      password: hashedPassword,
-    } as IUser);
+  async createUser(user: IUser): Promise<Object> {
+    user.password = await bcrypt.hash(user.password, 10);
+    const createdUser = await userRepository.createUser(user);
 
-    return user;
+    return {
+      id: createdUser.id,
+      name: createdUser.name,
+      surname: createdUser.surname,
+      email: createdUser.email,
+    };
+  }
+
+  async getUserByID(userID: string): Promise<IUser> {
+    const getUser = await userRepository.getUserByID(userID);
+
+    if (!getUser) {
+      throw createError.NotFound('User not found.');
+    }
+
+    return getUser;
   }
 
   async getUserByEmail(email: string): Promise<IUser> {
-    const user = await userRepository.getUserByEmail(email);
+    const getUser = await userRepository.getUserByEmail(email);
 
-    if (!user) {
+    if (!getUser) {
       throw createError.Unauthorized('Invalid email or password.');
     }
 
-    return user;
+    return getUser;
   }
 
   async updatePassword(
     userID: string,
     oldPassword: string,
-    newPassword: string,
-  ) {
-    const isUpdated = await userRepository.updatePassword(
-      userID,
-      oldPassword,
-      newPassword,
+    password: string,
+  ): Promise<Object> {
+    const getUser = await this.getUserByID(userID);
+    const isMatch = await bcrypt.compare(oldPassword, getUser.password);
+
+    if (!isMatch) {
+      throw createError(400, 'Incorrect current password.');
+    }
+
+    const updatedUser = await userRepository.updatePassword(
+      getUser.id,
+      password,
     );
 
-    if (!isUpdated) {
+    if (!updatedUser) {
       throw createError(400, 'Failed to update password.');
     }
 
-    return { message: 'Password updated successfully.' };
+    return {
+      userID: updatedUser.id,
+      name: updatedUser.name,
+      surname: updatedUser.surname,
+      message: 'Password updated successfully.',
+    };
   }
 
-  async updateEmail(userID: string, oldEmail: string, newEmail: string) {
-    const isUpdated = await userRepository.updateEmail(
-      userID,
-      oldEmail,
-      newEmail,
-    );
+  async updateEmail(
+    userID: string,
+    oldEmail: string,
+    email: string,
+  ): Promise<Object> {
+    const getUser = await this.getUserByID(userID);
 
-    if (!isUpdated) {
+    if (getUser.email !== oldEmail) {
+      throw createError(400, 'Incorrect current email.');
+    }
+
+    const updatedUser = await userRepository.updateEmail(getUser.id, email);
+
+    if (!updatedUser) {
       throw createError(400, 'Failed to update email.');
     }
 
-    return { message: 'Email updated successfully.' };
+    return {
+      userID: updatedUser.id,
+      name: updatedUser.name,
+      surname: updatedUser.surname,
+      email: updatedUser.email,
+      message: 'Email updated successfully.',
+    };
   }
 
-  async updateRole(userID: string, role: string) {
-    const isUpdated = await userRepository.updateRole(userID, role);
+  async deactivateAccount(userID: string): Promise<Object> {
+    const getUser = await this.getUserByID(userID);
+    const updatedUser = await userRepository.deactivateAccount(getUser.id);
 
-    if (!isUpdated) {
-      throw createError(400, 'Failed to update role.');
-    }
-
-    return { message: 'Role updated successfully.' };
-  }
-
-  async deactivateAccount(userID: string) {
-    const isDeactivated = await userRepository.deactivateAccount(userID);
-
-    if (!isDeactivated) {
+    if (!updatedUser) {
       throw createError(400, 'Failed to deactivate role.');
     }
 
-    return { message: 'Account deactivated successfully.' };
+    return {
+      userID: updatedUser.id,
+      name: updatedUser.name,
+      surname: updatedUser.surname,
+      email: updatedUser.email,
+      message: 'Account deactivated successfully.',
+    };
   }
 }
 
