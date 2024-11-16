@@ -77,6 +77,12 @@ class UsersService {
       throw createError(400, 'Incorrect current email.');
     }
 
+    const isEmailTaken = await userRepository.getUserByEmail(newEmail);
+
+    if (isEmailTaken) {
+      throw createError(400, 'Please use a different email.');
+    }
+
     const updatedUser = await userRepository.updateEmail(getUser.id, newEmail);
 
     if (!updatedUser) {
@@ -97,7 +103,7 @@ class UsersService {
     const updatedUser = await userRepository.deactivateAccount(getUser.id);
 
     if (!updatedUser) {
-      throw createError(400, 'Failed to deactivate role.');
+      throw createError(400, 'Failed to deactivate account.');
     }
 
     return {
