@@ -125,7 +125,7 @@ class UsersController {
         return;
       }
 
-      const { oldPassword, password } = req.body;
+      const { password, newPassword } = req.body;
       const { id } = req.params;
       const authID = req.payload.aud;
 
@@ -135,8 +135,8 @@ class UsersController {
 
       const result = await usersService.updatePassword(
         id,
-        oldPassword,
         password,
+        newPassword,
       );
 
       res.status(200).json({
@@ -168,7 +168,7 @@ class UsersController {
         return;
       }
 
-      const { oldEmail, email } = req.body;
+      const { email, newEmail } = req.body;
       const { id } = req.params;
       const authID = req.payload.aud;
 
@@ -176,7 +176,7 @@ class UsersController {
         return next(createError.Unauthorized());
       }
 
-      const result = await usersService.updateEmail(id, oldEmail, email);
+      const result = await usersService.updateEmail(id, email, newEmail);
 
       res.status(200).json({
         result,
