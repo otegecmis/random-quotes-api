@@ -83,9 +83,13 @@ class QuoteRepository {
 
   async deleteQuote(id: string): Promise<void> {
     try {
-      const result = await Quote.findByIdAndDelete(id);
+      const deletedQuote = await Quote.findByIdAndUpdate(
+        id,
+        { status: EStatus.inactive },
+        { new: true, runValidators: true },
+      ).exec();
 
-      if (!result) {
+      if (!deletedQuote) {
         throw createError(
           404,
           'The quote you are trying to delete does not exist.',
