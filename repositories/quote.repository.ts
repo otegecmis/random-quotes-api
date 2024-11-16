@@ -1,6 +1,6 @@
 import createError from 'http-errors';
 
-import Quote, { IQuote } from '../models/Quote';
+import Quote, { IQuote, EStatus } from '../models/Quote';
 
 class QuoteRepository {
   async createQuote(quote: IQuote): Promise<IQuote> {
@@ -22,11 +22,13 @@ class QuoteRepository {
   async getQuotes(currentPage: number, perPage: number) {
     try {
       const skip = (currentPage - 1) * perPage;
-      const quotes = await Quote.find({ status: 'active' })
+      const quotes = await Quote.find({ status: EStatus.active })
         .skip(skip)
         .limit(perPage)
         .exec();
-      const totalQuotes = await Quote.countDocuments({ status: 'active' });
+      const totalQuotes = await Quote.countDocuments({
+        status: EStatus.active,
+      });
 
       return {
         quotes,
@@ -41,7 +43,7 @@ class QuoteRepository {
 
   async getRandomQuote(): Promise<IQuote | null> {
     try {
-      const count = await Quote.countDocuments({ status: 'active' });
+      const count = await Quote.countDocuments({ status: EStatus.active });
 
       if (count === 0) {
         throw createError.NotFound(
@@ -51,7 +53,9 @@ class QuoteRepository {
 
       const randomIndex = Math.floor(Math.random() * count);
 
-      return await Quote.findOne({ status: 'active' }).skip(randomIndex).exec();
+      return await Quote.findOne({ status: EStatus.active })
+        .skip(randomIndex)
+        .exec();
     } catch (error: any) {
       throw createError(500, `${error.message}`);
     }
