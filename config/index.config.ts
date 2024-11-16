@@ -17,7 +17,6 @@ const env = envSchema({
     properties: {
       PORT: {
         type: 'number',
-        default: 8000,
       },
       ORIGIN: {
         type: 'string',
