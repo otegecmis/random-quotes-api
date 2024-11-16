@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const envContent = `NODE_ENV = development
+const envContent = `PORT = 8000
+NODE_ENV = development
 MONGO_URI = mongodb://mongo:27017/quotes
 
 ACCESS_TOKEN_SECRET = access-token-secret
