@@ -109,13 +109,13 @@ router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
  *           schema:
  *             type: object
  *             properties:
- *               oldPassword:
- *                 type: string
  *               password:
  *                 type: string
+ *               newPassword:
+ *                 type: string
  *             example:
- *               oldPassword: "123456"
- *               password: "987654"
+ *               password: "123456"
+ *               newPassword: "987654"
  *     responses:
  *       200:
  *         description: Ok
@@ -148,13 +148,13 @@ router.put(
  *           schema:
  *             type: object
  *             properties:
- *               oldEmail:
- *                 type: string
  *               email:
  *                 type: string
+ *               newEmail:
+ *                 type: string
  *             example:
- *               oldEmail: "namesurname@domain.com"
- *               email: "surnamename@domain.com"
+ *               email: "namesurname@domain.com"
+ *               newEmail: "surnamename@domain.com"
  *     responses:
  *       200:
  *         description: Ok

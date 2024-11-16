@@ -39,11 +39,11 @@ class UsersService {
 
   async updatePassword(
     userID: string,
-    oldPassword: string,
     password: string,
+    newPassword: string,
   ): Promise<Object> {
     const getUser = await this.getUserByID(userID);
-    const isMatch = await bcrypt.compare(oldPassword, getUser.password);
+    const isMatch = await bcrypt.compare(password, getUser.password);
 
     if (!isMatch) {
       throw createError(400, 'Incorrect current password.');
@@ -51,7 +51,7 @@ class UsersService {
 
     const updatedUser = await userRepository.updatePassword(
       getUser.id,
-      password,
+      newPassword,
     );
 
     if (!updatedUser) {
@@ -68,16 +68,16 @@ class UsersService {
 
   async updateEmail(
     userID: string,
-    oldEmail: string,
     email: string,
+    newEmail: string,
   ): Promise<Object> {
     const getUser = await this.getUserByID(userID);
 
-    if (getUser.email !== oldEmail) {
+    if (getUser.email !== email) {
       throw createError(400, 'Incorrect current email.');
     }
 
-    const updatedUser = await userRepository.updateEmail(getUser.id, email);
+    const updatedUser = await userRepository.updateEmail(getUser.id, newEmail);
 
     if (!updatedUser) {
       throw createError(400, 'Failed to update email.');
