@@ -23,3 +23,7 @@ If you want to quickly check out the project, the generated default variables ar
 ```sh
 docker-compose up --build -d
 ```
+
+Thats it! 🥳
+
+> *🚧 Necessary information will be added soon.*
