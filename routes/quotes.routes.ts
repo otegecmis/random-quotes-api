@@ -60,11 +60,7 @@ router.post(
  *       200:
  *         description: Ok
  */
-router.get(
-  '/',
-  rateLimiters.common,
-  quotesController.getQuotes,
-);
+router.get('/', rateLimiters.common, quotesController.getQuotes);
 
 /**
  * @swagger
@@ -96,11 +92,7 @@ router.get('/random', rateLimiters.common, quotesController.randomQuotes);
  *       200:
  *         description: Ok
  */
-router.get(
-  '/:id',
-  rateLimiters.common,
-  quotesController.getQuote,
-);
+router.get('/:id', rateLimiters.common, quotesController.getQuote);
 
 /**
  * @swagger
