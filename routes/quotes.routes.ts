@@ -47,8 +47,6 @@ router.post(
  *     summary: get quotes
  *     description:
  *     tags: [quotes]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: currentPage
@@ -65,7 +63,6 @@ router.post(
 router.get(
   '/',
   rateLimiters.common,
-  authCheck.isSignIn,
   quotesController.getQuotes,
 );
 
@@ -89,8 +86,6 @@ router.get('/random', rateLimiters.common, quotesController.randomQuotes);
  *     summary: get quote
  *     description:
  *     tags: [quotes]
- *     security:
- *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -104,7 +99,6 @@ router.get('/random', rateLimiters.common, quotesController.randomQuotes);
 router.get(
   '/:id',
   rateLimiters.common,
-  authCheck.isSignIn,
   quotesController.getQuote,
 );
 
