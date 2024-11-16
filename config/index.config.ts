@@ -17,9 +17,11 @@ const env = envSchema({
     properties: {
       PORT: {
         type: 'number',
+        default: 8000,
       },
       ORIGIN: {
         type: 'string',
+        default: '*',
       },
       NODE_ENV: {
         type: 'string',
@@ -32,12 +34,14 @@ const env = envSchema({
       },
       ACCESS_TOKEN_EXPIRATION: {
         type: 'string',
+        default: '1h',
       },
       REFRESH_TOKEN_SECRET: {
         type: 'string',
       },
       REFRESH_TOKEN_EXPIRATION: {
         type: 'string',
+        default: '7d',
       },
     },
   },
