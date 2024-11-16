@@ -1,9 +1,14 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
+export enum EStatus {
+  'active' = 1,
+  'pending' = 2,
+  'inactive' = 3,
+}
 export interface IQuote extends Document {
   quote: string;
   author: string;
-  status: string;
+  status?: EStatus;
   userID: mongoose.Types.ObjectId;
 }
 
@@ -17,8 +22,9 @@ const QuoteSchema: Schema = new Schema({
     required: true,
   },
   status: {
-    type: String,
-    default: 'active',
+    type: Number,
+    enum: EStatus,
+    default: EStatus.active,
   },
   userID: {
     type: mongoose.Schema.Types.ObjectId,
