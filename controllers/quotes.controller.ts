@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { IQuote } from '../models/Quote';
 import quotesService from '../services/quotes.service';
 
+import { AuthRequest } from '../middleware/auth-check.middleware';
 import {
   createQuoteValidationSchema,
   getQuotesValidationSchema,
@@ -13,7 +14,7 @@ import {
 
 class QuotesController {
   async createQuotes(
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
@@ -31,10 +32,11 @@ class QuotesController {
       }
 
       const { quote, author } = req.body;
-
+      const authID = req.payload.aud;
       const result = await quotesService.createQuote({
         quote,
         author,
+        userID: authID,
       } as IQuote);
 
       res.status(201).json({
@@ -125,7 +127,7 @@ class QuotesController {
   }
 
   async updateQuote(
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
@@ -146,9 +148,11 @@ class QuotesController {
 
       const { id } = req.params;
       const { quote, author } = req.body;
+      const authID = req.payload.aud;
       const result = await quotesService.updateQuote(id, {
         quote,
         author,
+        userID: authID,
       } as IQuote);
 
       res.status(200).json({
@@ -160,7 +164,7 @@ class QuotesController {
   }
 
   async deleteQuote(
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
@@ -178,7 +182,9 @@ class QuotesController {
       }
 
       const { id } = req.params;
-      await quotesService.deleteQuote(id);
+      const authID = req.payload.aud;
+
+      await quotesService.deleteQuote(id, authID);
 
       res.status(204).end();
     } catch (error) {
