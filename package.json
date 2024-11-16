@@ -1,7 +1,7 @@
 {
   "name": "random-quotes-api",
   "version": "1.5.0",
-  "description": "A backend API built with Node.js, Express.js and TypeScript for fetching random quotes.",
+  "description": "A backend API for fetching random quotes.",
   "private": true,
   "scripts": {
     "start": "node dist/server.js",
@@ -9,7 +9,8 @@
     "build": "tsc",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "clean": "rm -rf dist",
-    "generate-env": "node scripts/generate-env.js"
+    "env": "node scripts/generate-env.js",
+    "docker": "docker-compose up --build -d"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
