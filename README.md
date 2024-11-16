@@ -1,29 +1,27 @@
 ## Random Quotes API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/random-quotes-api/blob/main/LICENSE.md)
 
-- A backend API built with **Node.js**, **TypeScript** and **Express.js** for fetching random quotes.
+- A backend API built with **Node.js**, **MongoDB**, **Express.js** and **TypeScript** for fetching random quotes.
 
 ### 1. Installation
 
-1. Clone the repository
+- Clone the repository
 
 ```sh
 git clone https://github.com/otegecmis/random-quotes-api.git && cd random-quotes-api
 ```
 
-2. Generate `.env`
+- Generate `.env`
 
 ```sh
-npm run generate-env
+npm run env
 ```
 
-If you want to quickly check out the project, the generated default variables are enough (for testing purposes only). For more options, review the `.env.example` file.
+Update the generated `.env` file as needed and review the `.env.example` file for more options.
 
-3. Start
+- Start the project
 
 ```sh
-docker-compose up --build -d
+npm run docker
 ```
 
-Thats it! 🥳
-
-> *🚧 Necessary information will be added soon.*
+That's it! 🥳
