@@ -90,6 +90,78 @@ router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
 
 /**
  * @swagger
+ * /api/users/send-reset-code:
+ *   post:
+ *     summary: send a password reset code to the user's email
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *             example:
+ *               email: "namesurname@domain.com"
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.post(
+  '/send-reset-code',
+  rateLimiters.auth,
+  usersController.sendResetCode,
+);
+
+/**
+ * @swagger
+ * /api/users/reset-password:
+ *   put:
+ *     summary: reset the user’s password
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               resetCode:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *             example:
+ *               resetCode: ""
+ *               newPassword: "111213"
+ *     responses:
+ *       200:
+ *         description: OK
+ */
+router.put('/reset-password', rateLimiters.auth, usersController.resetPassword);
+
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     summary: get user
+ *     description:
+ *     tags: [users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Ok
+ */
+router.get('/:id', rateLimiters.common, usersController.getUser);
+
+/**
+ * @swagger
  * /api/users/{id}/password:
  *   put:
  *     summary: update password
@@ -168,7 +240,33 @@ router.put(
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/users/activate:
+ *   put:
+ *     summary: activate account
+ *     tags: [users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             example:
+ *               email: "namesurname@domain.com"
+ *               password: "123456"
+ *     responses:
+ *       200:
+ *         description: Ok
+ */
+router.put('/activate', rateLimiters.database, usersController.activateAccount);
+
+/**
+ * @swagger
+ * /api/users/{id}/deactivate:
  *   delete:
  *     summary: deactivate account
  *     tags: [users]
@@ -185,7 +283,7 @@ router.put(
  *         description: Ok
  */
 router.delete(
-  '/:id',
+  '/:id/deactivate',
   rateLimiters.database,
   authCheck.isSignIn,
   usersController.deactivateAccount,

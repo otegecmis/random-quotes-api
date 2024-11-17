@@ -10,8 +10,12 @@ import {
   createUserValidationSchema,
   loginValidationSchema,
   refreshTokensValidationSchema,
+  sendResetCodeValidationSchema,
+  resetPasswordCodeValidationSchema,
+  getUserValidationSchema,
   updatePasswordValidationSchema,
   updateEmailValidationSchema,
+  activateAccountValidationSchema,
   deactivateAccountValidationSchema,
 } from '../validations/users.validation';
 
@@ -104,6 +108,93 @@ class UsersController {
     }
   }
 
+  async sendResetCode(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { error } = sendResetCodeValidationSchema.validate(req.body);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
+      const { email } = req.body;
+      const result = await authService.sendResetCode(email);
+
+      res.status(200).json({
+        result: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async resetPassword(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { error } = resetPasswordCodeValidationSchema.validate(req.body);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
+      const { resetCode, newPassword } = req.body;
+      const result = await usersService.resetPassword(resetCode, newPassword);
+
+      res.status(200).json({
+        result: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getUser(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { error } = getUserValidationSchema.validate(req.params);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
+      const { id } = req.params;
+      const result = await usersService.getUser(id);
+
+      res.status(200).json({
+        result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async updatePassword(
     req: AuthRequest,
     res: Response,
@@ -180,6 +271,35 @@ class UsersController {
 
       res.status(200).json({
         result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async activateAccount(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> {
+    try {
+      const { error } = activateAccountValidationSchema.validate(req.body);
+
+      if (error) {
+        res.status(400).json({
+          result: {
+            message: error.details[0].message,
+          },
+        });
+
+        return;
+      }
+
+      const { email, password } = req.body;
+      const result = await usersService.activateAccount(email, password);
+
+      res.status(200).json({
+        result: result,
       });
     } catch (error) {
       next(error);

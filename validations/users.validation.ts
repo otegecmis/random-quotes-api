@@ -18,6 +18,19 @@ export const refreshTokensValidationSchema = Joi.object({
   ),
 });
 
+export const sendResetCodeValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+export const resetPasswordCodeValidationSchema = Joi.object({
+  resetCode: Joi.string().required(),
+  newPassword: Joi.string().min(6).required(),
+});
+
+export const getUserValidationSchema = Joi.object({
+  id: Joi.string().hex().length(24).required(),
+});
+
 export const updatePasswordValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
   oldPassword: Joi.string().email().required(),
@@ -28,6 +41,11 @@ export const updateEmailValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
   oldEmail: Joi.string().email().required(),
   newEmail: Joi.string().email().required(),
+});
+
+export const activateAccountValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
 });
 
 export const deactivateAccountValidationSchema = Joi.object({

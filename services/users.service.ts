@@ -37,6 +37,13 @@ class UsersService {
     return getUser;
   }
 
+  async getUser(id: string): Promise<Object> {
+    return {
+      message: 'WIP',
+      id,
+    };
+  }
+
   async updatePassword(
     userID: string,
     password: string,
@@ -63,6 +70,14 @@ class UsersService {
       name: updatedUser.name,
       surname: updatedUser.surname,
       message: 'Password updated successfully.',
+    };
+  }
+
+  async resetPassword(resetCode: string, newPassword: string): Promise<Object> {
+    return {
+      message: 'WIP',
+      resetCode,
+      newPassword,
     };
   }
 
@@ -95,6 +110,14 @@ class UsersService {
       surname: updatedUser.surname,
       email: updatedUser.email,
       message: 'Email updated successfully.',
+    };
+  }
+
+  async activateAccount(email: string, password: string): Promise<Object> {
+    return {
+      message: 'WIP',
+      email,
+      password,
     };
   }
 
