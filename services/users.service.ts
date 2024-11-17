@@ -113,11 +113,26 @@ class UsersService {
     };
   }
 
-  async activateAccount(email: string, password: string): Promise<Object> {
+  async activateAccount(
+    email: string,
+    password: string,
+  ): Promise<{ message: string; email: string }> {
+    const user: IUser = await this.getUserByEmail(email);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw createError.Unauthorized('Invalid email or password.');
+    }
+
+    if (user.status === true) {
+      throw createError.Forbidden('Your account is already active.');
+    }
+
+    await userRepository.activateAccount(user.id);
+
     return {
-      message: 'WIP',
-      email,
-      password,
+      message: 'Account successfully activated.',
+      email: user.email,
     };
   }
 
