@@ -64,6 +64,22 @@ class UserRepository {
     }
   }
 
+  async activateAccount(userID: string): Promise<IUser> {
+    try {
+      const getUser = await this.getUserByID(userID);
+
+      if (!getUser) {
+        throw createError(404, 'User not found.');
+      }
+
+      getUser.status = true;
+
+      return getUser.save();
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
+    }
+  }
+
   async deactivateAccount(userID: string): Promise<IUser> {
     try {
       const getUser = await this.getUserByID(userID);
