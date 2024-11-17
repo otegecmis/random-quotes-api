@@ -33,13 +33,13 @@ export const getUserValidationSchema = Joi.object({
 
 export const updatePasswordValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
-  oldPassword: Joi.string().email().required(),
+  password: Joi.string().email().required(),
   newPassword: Joi.string().min(6).required(),
 });
 
 export const updateEmailValidationSchema = Joi.object({
   id: Joi.string().hex().length(24).required(),
-  oldEmail: Joi.string().email().required(),
+  email: Joi.string().email().required(),
   newEmail: Joi.string().email().required(),
 });
 
