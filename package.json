@@ -1,6 +1,6 @@
 {
   "name": "random-quotes-api",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A backend API for fetching random quotes.",
   "private": true,
   "scripts": {
