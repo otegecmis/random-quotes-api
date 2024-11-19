@@ -7,7 +7,7 @@ export interface AuthRequest extends Request {
   payload?: any;
 }
 
-const authCheck = {
+export const authCheck = {
   isSignIn: async (
     req: AuthRequest,
     res: Response,
@@ -27,5 +27,3 @@ const authCheck = {
     }
   },
 };
-
-export default authCheck;

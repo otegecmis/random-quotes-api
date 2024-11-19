@@ -7,6 +7,9 @@ MONGO_URI = mongodb://mongo:27017/quotes
 
 ACCESS_TOKEN_SECRET = access-token-secret
 REFRESH_TOKEN_SECRET = refresh-token-secret
+
+SMTP_USER = smtp-user
+SMTP_PASS = smtp-pass
 `;
 
 const filePath = path.resolve(__dirname, '../.env');

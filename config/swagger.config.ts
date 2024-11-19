@@ -1,7 +1,7 @@
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 
+import { SwaggerTheme, SwaggerThemeNameEnum } from 'swagger-themes';
 import packageJSON from '../package.json';
 
 const swaggerSpec = swaggerJSDoc({
@@ -28,7 +28,7 @@ const swaggerSpec = swaggerJSDoc({
 const theme = new SwaggerTheme();
 const options = {
   explorer: false,
-  customCss: theme.getBuffer(SwaggerThemeNameEnum.FLATTOP),
+  customCss: theme.getBuffer(SwaggerThemeNameEnum.GRUVBOX),
 };
 
 export const serve = swaggerUI.serve;

@@ -4,33 +4,14 @@ import { IQuote } from '../models/Quote';
 import quotesService from '../services/quotes.service';
 
 import { AuthRequest } from '../middleware/auth-check.middleware';
-import {
-  createQuoteValidationSchema,
-  getQuotesValidationSchema,
-  getQuoteValidationSchema,
-  updateQuoteValidationSchema,
-  deleteQuoteValidationSchema,
-} from '../validations/quotes.validation';
 
 class QuotesController {
-  async createQuotes(
+  async createQuote(
     req: AuthRequest,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = createQuoteValidationSchema.validate(req.body);
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-
-        return;
-      }
-
       const { quote, author } = req.body;
       const authID = req.payload.aud;
       const result = await quotesService.createQuote({
@@ -53,18 +34,6 @@ class QuotesController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = getQuotesValidationSchema.validate(req.query);
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-
-        return;
-      }
-
       const currentPage = req.query.currentPage
         ? parseInt(req.query.currentPage as string, 10)
         : 1;
@@ -81,7 +50,7 @@ class QuotesController {
     }
   }
 
-  async randomQuotes(
+  async randomQuote(
     req: Request,
     res: Response,
     next: NextFunction,
@@ -103,18 +72,6 @@ class QuotesController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = getQuoteValidationSchema.validate(req.params);
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-
-        return;
-      }
-
       const { id } = req.params;
       const result = await quotesService.getQuote(id);
 
@@ -132,20 +89,6 @@ class QuotesController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = updateQuoteValidationSchema.validate({
-        ...req.params,
-        ...req.body,
-      });
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-        return;
-      }
-
       const { id } = req.params;
       const { quote, author } = req.body;
       const authID = req.payload.aud;
@@ -169,18 +112,6 @@ class QuotesController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = deleteQuoteValidationSchema.validate(req.params);
-
-      if (error) {
-        res.status(400).json({
-          result: {
-            message: error.details[0].message,
-          },
-        });
-
-        return;
-      }
-
       const { id } = req.params;
       const authID = req.payload.aud;
 

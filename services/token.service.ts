@@ -51,9 +51,8 @@ class TokenService {
       const payload = jsonwebtoken.verify(refreshToken, secret) as {
         aud: string;
       };
-      const userID = payload.aud;
 
-      return userID;
+      return payload.aud;
     } catch (error) {
       throw createError.Unauthorized('Please sign in again.');
     }
@@ -76,15 +75,14 @@ class TokenService {
     }
   }
 
-  async verifyResetPasswordToken(resetCode: string): Promise<string> {
+  async verifyResetPasswordToken(token: string): Promise<string> {
     try {
       const secret = config.token.passwordReset.secret;
-      const payload = jsonwebtoken.verify(resetCode, secret) as {
+      const payload = jsonwebtoken.verify(token, secret) as {
         aud: string;
       };
-      const userID = payload.aud;
 
-      return userID;
+      return payload.aud;
     } catch (error) {
       throw createError.Unauthorized('Ops! Something went wrong.');
     }

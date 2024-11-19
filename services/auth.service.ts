@@ -26,13 +26,11 @@ class AuthService {
       );
     }
 
-    const result = {
+    return {
       userID: user.id,
       access_token,
       refresh_token,
     };
-
-    return result;
   }
 
   async refreshTokens(token: string): Promise<Object> {
@@ -40,24 +38,22 @@ class AuthService {
     const access_token: string = await tokenService.createAccessToken(userID);
     const refresh_token: string = await tokenService.createRefreshToken(userID);
 
-    const result = {
+    return {
       userID,
       access_token,
       refresh_token,
     };
-
-    return result;
   }
 
+  // TODO: Implement the sendResetPasswordToken method to send a reset password token to the user's email.
   async sendResetPasswordToken(email: string): Promise<Object> {
     const user: IUser = await usersService.getUserByEmail(email);
-    const message = 'Password reset service is not available at the moment.';
     const resetPasswordToken = await tokenService.createResetPasswordToken(
       user.id,
     );
 
     return {
-      message: message,
+      message: 'Password reset service is not available at the moment.',
     };
   }
 }

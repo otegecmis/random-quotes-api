@@ -92,7 +92,7 @@ const config = {
       },
     },
   },
-  mail: {
+  email: {
     service: 'Gmail',
     host: 'smtp.gmail.com',
     port: parseInt('465', 10),
@@ -101,7 +101,7 @@ const config = {
       user: env.SMTP_USER,
       pass: env.SMTP_PASS,
     },
-  }
+  },
 };
 
 export default config;
