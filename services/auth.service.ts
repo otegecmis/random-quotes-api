@@ -6,6 +6,8 @@ import { IUser } from '../models/User';
 import tokenService from './token.service';
 import usersService from './users.service';
 
+import emailHelper from '../helpers/email.helper';
+
 class AuthService {
   async login(email: string, password: string): Promise<Object> {
     const user: IUser = await usersService.getUserByEmail(email);
@@ -45,15 +47,19 @@ class AuthService {
     };
   }
 
-  // TODO: Implement the sendResetPasswordToken method to send a reset password token to the user's email.
   async sendResetPasswordToken(email: string): Promise<Object> {
     const user: IUser = await usersService.getUserByEmail(email);
     const resetPasswordToken = await tokenService.createResetPasswordToken(
       user.id,
     );
 
+    const to = user.email;
+    const subject = 'Reset Password';
+    const text = `Your reset password token is: ${resetPasswordToken}`;
+    const sendEmail = await emailHelper.sendEMail(to, subject, text);
+
     return {
-      message: 'Password reset service is not available at the moment.',
+      message: sendEmail.message,
     };
   }
 }
