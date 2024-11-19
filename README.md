@@ -37,7 +37,7 @@ To access `Swagger` documentation, make sure the `NODE_ENV` in the `.env` file i
 Then, you can access it via `api/swagger`.
 
 <div style="float: left;">
-    <img src="assets/swagger.jpeg" style="width: 70%;" />
+    <img src="assets/swagger.jpeg" style="width: 80%;" />
 </div>
 
 
