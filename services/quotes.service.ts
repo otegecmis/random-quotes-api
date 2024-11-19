@@ -28,6 +28,16 @@ class QuotesService {
     return getQuote;
   }
 
+  async getQuotesByAuthor(id: string) {
+    const getQuotesByAuthor = await quoteRepository.getQuotesByAuthor(id);
+
+    if (!getQuotesByAuthor) {
+      throw createError.NotFound('Quotes not found.');
+    }
+
+    return getQuotesByAuthor;
+  }
+
   async getQuotes(currentPage: number, perPage: number) {
     const getQuotes = await quoteRepository.getQuotes(currentPage, perPage);
 

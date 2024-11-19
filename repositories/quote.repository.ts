@@ -19,6 +19,19 @@ class QuoteRepository {
     }
   }
 
+  async getQuotesByAuthor(id: string) {
+    try {
+      const quotes = await Quote.find({ userID: id }).exec();
+
+      return {
+        quotes,
+      };
+
+    } catch (error: any) {
+      throw createError(500, `${error.message}`);
+    }
+  }
+
   async getQuotes(currentPage: number, perPage: number) {
     try {
       const skip = (currentPage - 1) * perPage;
