@@ -4,13 +4,13 @@
 
 ### 1. Installation
 
-- Clone the repository
+- **Clone the repository**
 
 ```sh
 git clone https://github.com/otegecmis/random-quotes-api.git && cd random-quotes-api
 ```
 
-- Generate `.env`
+- **Generate `.env`**
 
 ```sh
 npm run env
@@ -18,7 +18,21 @@ npm run env
 
 Update the generated `.env` file as needed and review the `.env.example` file for more options.
 
-- Start the project
+- **Start the project**
+
+Start in Development Mode:
+
+```sh
+npm run dev
+```
+
+Build and Start for Production:
+
+```sh
+npm run build && npm run start
+```
+
+Start with Docker:
 
 ```sh
 npm run docker
