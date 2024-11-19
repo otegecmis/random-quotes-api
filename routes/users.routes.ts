@@ -90,9 +90,9 @@ router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
 
 /**
  * @swagger
- * /api/users/send-reset-code:
+ * /api/users/send-reset-password-token:
  *   post:
- *     summary: send a password reset code to the user's email
+ *     summary: send reset password token
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -110,9 +110,9 @@ router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
  *         description: OK
  */
 router.post(
-  '/send-reset-code',
+  '/send-reset-password-token',
   rateLimiters.auth,
-  usersController.sendResetCode,
+  usersController.sendResetPasswordToken,
 );
 
 /**
@@ -128,13 +128,13 @@ router.post(
  *           schema:
  *             type: object
  *             properties:
- *               resetCode:
+ *               resetPasswordToken:
  *                 type: string
  *               newPassword:
  *                 type: string
  *             example:
- *               resetCode: ""
- *               newPassword: "111213"
+ *               resetPasswordToken: ""
+ *               newPassword: "ABC123"
  *     responses:
  *       200:
  *         description: OK

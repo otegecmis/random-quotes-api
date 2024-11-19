@@ -10,8 +10,8 @@ import {
   createUserValidationSchema,
   loginValidationSchema,
   refreshTokensValidationSchema,
-  sendResetCodeValidationSchema,
-  resetPasswordCodeValidationSchema,
+  sendResetPasswordTokenValidationSchema,
+  resetPasswordValidationSchema,
   getUserValidationSchema,
   updatePasswordValidationSchema,
   updateEmailValidationSchema,
@@ -108,13 +108,15 @@ class UsersController {
     }
   }
 
-  async sendResetCode(
+  async sendResetPasswordToken(
     req: Request,
     res: Response,
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = sendResetCodeValidationSchema.validate(req.body);
+      const { error } = sendResetPasswordTokenValidationSchema.validate(
+        req.body,
+      );
 
       if (error) {
         res.status(400).json({
@@ -127,7 +129,7 @@ class UsersController {
       }
 
       const { email } = req.body;
-      const result = await authService.sendResetCode(email);
+      const result = await authService.sendResetPasswordToken(email);
 
       res.status(200).json({
         result: result,
@@ -143,7 +145,7 @@ class UsersController {
     next: NextFunction,
   ): Promise<void> {
     try {
-      const { error } = resetPasswordCodeValidationSchema.validate(req.body);
+      const { error } = resetPasswordValidationSchema.validate(req.body);
 
       if (error) {
         res.status(400).json({
@@ -155,8 +157,11 @@ class UsersController {
         return;
       }
 
-      const { resetCode, newPassword } = req.body;
-      const result = await usersService.resetPassword(resetCode, newPassword);
+      const { resetPasswordToken, newPassword } = req.body;
+      const result = await usersService.resetPassword(
+        resetPasswordToken,
+        newPassword,
+      );
 
       res.status(200).json({
         result: result,

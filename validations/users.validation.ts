@@ -18,12 +18,12 @@ export const refreshTokensValidationSchema = Joi.object({
   ),
 });
 
-export const sendResetCodeValidationSchema = Joi.object({
+export const sendResetPasswordTokenValidationSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
-export const resetPasswordCodeValidationSchema = Joi.object({
-  resetCode: Joi.string().required(),
+export const resetPasswordValidationSchema = Joi.object({
+  resetPasswordToken: Joi.string().required(),
   newPassword: Joi.string().min(6).required(),
 });
 
