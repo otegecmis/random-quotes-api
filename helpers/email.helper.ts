@@ -3,21 +3,25 @@ import nodemailer from 'nodemailer';
 
 import config from '../config/index.config';
 
-class Mail {
+class EMail {
   private transporter = nodemailer.createTransport({
-    host: config.mail.host,
-    port: config.mail.port,
-    secure: config.mail.secure,
+    host: config.email.host,
+    port: config.email.port,
+    secure: config.email.secure,
     auth: {
-      user: config.mail.auth.user,
-      pass: config.mail.auth.pass,
+      user: config.email.auth.user,
+      pass: config.email.auth.pass,
     },
   });
 
-  async sendMail(to: string, subject: string, text: string): Promise<{ message: string }> {
+  async sendEMail(
+    to: string,
+    subject: string,
+    text: string,
+  ): Promise<{ message: string }> {
     try {
       await this.transporter.sendMail({
-        from: config.mail.auth.user,
+        from: config.email.auth.user,
         to,
         subject,
         text,
@@ -25,11 +29,11 @@ class Mail {
 
       return {
         message: 'Email sent successfully.',
-      }
+      };
     } catch (error: any) {
       throw createError(500, error.message);
     }
   }
 }
 
-export default new Mail();
+export default new EMail();

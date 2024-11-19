@@ -21,12 +21,7 @@ class QuoteRepository {
 
   async getQuotesByAuthor(id: string) {
     try {
-      const quotes = await Quote.find({ userID: id }).exec();
-
-      return {
-        quotes,
-      };
-
+      return await Quote.find({ userID: id }).exec();
     } catch (error: any) {
       throw createError(500, `${error.message}`);
     }

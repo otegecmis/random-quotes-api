@@ -2,8 +2,17 @@ import express from 'express';
 
 import quotesController from '../controllers/quotes.controller';
 
-import authCheck from '../middleware/auth-check.middleware';
-import rateLimiters from '../middleware/rate-limit.middleware';
+import { rateLimiter } from '../middleware/rate-limit.middleware';
+import { checkValidation } from '../middleware/validation-check.middleware';
+
+import { authCheck } from '../middleware/auth-check.middleware';
+import {
+  createQuoteValidationSchema,
+  getQuotesValidationSchema,
+  getQuoteValidationSchema,
+  updateQuoteValidationSchema,
+  deleteQuoteValidationSchema,
+} from '../validations/quotes.validation';
 
 const router = express.Router();
 
@@ -35,9 +44,10 @@ const router = express.Router();
  */
 router.post(
   '/',
-  rateLimiters.database,
+  rateLimiter(),
+  checkValidation(createQuoteValidationSchema),
   authCheck.isSignIn,
-  quotesController.createQuotes,
+  quotesController.createQuote,
 );
 
 /**
@@ -60,7 +70,12 @@ router.post(
  *       200:
  *         description: Ok
  */
-router.get('/', rateLimiters.common, quotesController.getQuotes);
+router.get(
+  '/',
+  rateLimiter(),
+  checkValidation(getQuotesValidationSchema),
+  quotesController.getQuotes,
+);
 
 /**
  * @swagger
@@ -73,7 +88,7 @@ router.get('/', rateLimiters.common, quotesController.getQuotes);
  *       200:
  *         description: OK
  */
-router.get('/random', rateLimiters.common, quotesController.randomQuotes);
+router.get('/random', rateLimiter(), quotesController.randomQuote);
 
 /**
  * @swagger
@@ -92,7 +107,12 @@ router.get('/random', rateLimiters.common, quotesController.randomQuotes);
  *       200:
  *         description: Ok
  */
-router.get('/:id', rateLimiters.common, quotesController.getQuote);
+router.get(
+  '/:id',
+  rateLimiter(),
+  checkValidation(getQuoteValidationSchema),
+  quotesController.getQuote,
+);
 
 /**
  * @swagger
@@ -129,7 +149,8 @@ router.get('/:id', rateLimiters.common, quotesController.getQuote);
  */
 router.put(
   '/:id',
-  rateLimiters.database,
+  rateLimiter(),
+  checkValidation(updateQuoteValidationSchema),
   authCheck.isSignIn,
   quotesController.updateQuote,
 );
@@ -155,7 +176,8 @@ router.put(
  */
 router.delete(
   '/:id',
-  rateLimiters.database,
+  rateLimiter(),
+  checkValidation(deleteQuoteValidationSchema),
   authCheck.isSignIn,
   quotesController.deleteQuote,
 );

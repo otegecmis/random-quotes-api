@@ -1,53 +1,61 @@
 import Joi from 'joi';
 
-export const createUserValidationSchema = Joi.object({
-  name: Joi.string().required(),
-  surname: Joi.string().required(),
+const sharedValidators = {
+  id: Joi.string().hex().length(24).required(),
+  namesurname: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
+  token: Joi.string()
+    .regex(/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/)
+    .required(),
+};
+
+export const createUserValidationSchema = Joi.object({
+  name: sharedValidators.namesurname,
+  surname: sharedValidators.namesurname,
+  email: sharedValidators.email,
+  password: sharedValidators.password,
 });
 
 export const loginValidationSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  email: sharedValidators.email,
+  password: sharedValidators.password,
 });
 
 export const refreshTokensValidationSchema = Joi.object({
-  refreshToken: Joi.string().regex(
-    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/,
-  ),
+  refreshToken: sharedValidators.token,
 });
 
 export const sendResetPasswordTokenValidationSchema = Joi.object({
-  email: Joi.string().email().required(),
+  email: sharedValidators.email,
 });
 
 export const resetPasswordValidationSchema = Joi.object({
-  resetPasswordToken: Joi.string().required(),
-  newPassword: Joi.string().min(6).required(),
+  resetPasswordToken: sharedValidators.token,
+  newPassword: sharedValidators.password,
 });
 
 export const getUserValidationSchema = Joi.object({
-  id: Joi.string().hex().length(24).required(),
+  id: sharedValidators.id,
 });
 
 export const updatePasswordValidationSchema = Joi.object({
-  id: Joi.string().hex().length(24).required(),
-  password: Joi.string().email().required(),
-  newPassword: Joi.string().min(6).required(),
+  id: sharedValidators.id,
+  password: sharedValidators.password,
+  newPassword: sharedValidators.password,
 });
 
 export const updateEmailValidationSchema = Joi.object({
-  id: Joi.string().hex().length(24).required(),
-  email: Joi.string().email().required(),
-  newEmail: Joi.string().email().required(),
+  id: sharedValidators.id,
+  email: sharedValidators.email,
+  newEmail: sharedValidators.email,
 });
 
 export const activateAccountValidationSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  email: sharedValidators.email,
+  password: sharedValidators.password,
 });
 
 export const deactivateAccountValidationSchema = Joi.object({
-  id: Joi.string().hex().length(24).required(),
+  id: sharedValidators.id,
 });

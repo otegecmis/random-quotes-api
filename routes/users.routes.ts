@@ -2,8 +2,22 @@ import express from 'express';
 
 import usersController from '../controllers/users.controller';
 
-import rateLimiters from '../middleware/rate-limit.middleware';
-import authCheck from '../middleware/auth-check.middleware';
+import { rateLimiter } from '../middleware/rate-limit.middleware';
+import { checkValidation } from '../middleware/validation-check.middleware';
+import { authCheck } from '../middleware/auth-check.middleware';
+
+import {
+  createUserValidationSchema,
+  loginValidationSchema,
+  refreshTokensValidationSchema,
+  sendResetPasswordTokenValidationSchema,
+  resetPasswordValidationSchema,
+  getUserValidationSchema,
+  updatePasswordValidationSchema,
+  updateEmailValidationSchema,
+  activateAccountValidationSchema,
+  deactivateAccountValidationSchema,
+} from '../validations/users.validation';
 
 const router = express.Router();
 
@@ -12,6 +26,7 @@ const router = express.Router();
  * /api/users:
  *   post:
  *     summary: create user
+ *     description: create a new user
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -37,13 +52,19 @@ const router = express.Router();
  *       201:
  *         description: Created
  */
-router.post('/', rateLimiters.database, usersController.createUser);
+router.post(
+  '/',
+  rateLimiter(5),
+  checkValidation(createUserValidationSchema),
+  usersController.createUser,
+);
 
 /**
  * @swagger
  * /api/users/login:
  *   post:
  *     summary: login
+ *     description: login with e-mail and password
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -60,16 +81,22 @@ router.post('/', rateLimiters.database, usersController.createUser);
  *               email: "namesurname@domain.com"
  *               password: "123456"
  *     responses:
- *       201:
- *         description: Created
+ *       200:
+ *         description: Ok
  */
-router.post('/login', rateLimiters.auth, usersController.login);
+router.post(
+  '/login',
+  rateLimiter(5),
+  checkValidation(loginValidationSchema),
+  usersController.login,
+);
 
 /**
  * @swagger
  * /api/users/refresh-tokens:
  *   put:
  *     summary: refresh tokens
+ *     description: refresh access token and refresh token
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -86,13 +113,19 @@ router.post('/login', rateLimiters.auth, usersController.login);
  *       200:
  *         description: OK
  */
-router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
+router.put(
+  '/refresh-tokens',
+  rateLimiter(),
+  checkValidation(refreshTokensValidationSchema),
+  usersController.refreshTokens,
+);
 
 /**
  * @swagger
  * /api/users/send-reset-password-token:
  *   post:
  *     summary: send reset password token
+ *     description: send a reset password token to the user's e-mail
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -111,7 +144,8 @@ router.put('/refresh-tokens', rateLimiters.auth, usersController.refreshTokens);
  */
 router.post(
   '/send-reset-password-token',
-  rateLimiters.auth,
+  rateLimiter(),
+  checkValidation(sendResetPasswordTokenValidationSchema),
   usersController.sendResetPasswordToken,
 );
 
@@ -120,6 +154,7 @@ router.post(
  * /api/users/reset-password:
  *   put:
  *     summary: reset the user’s password
+ *     description: update the user's password with the reset password token
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -139,14 +174,19 @@ router.post(
  *       200:
  *         description: OK
  */
-router.put('/reset-password', rateLimiters.auth, usersController.resetPassword);
+router.put(
+  '/reset-password',
+  rateLimiter(),
+  checkValidation(resetPasswordValidationSchema),
+  usersController.resetPassword,
+);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   get:
  *     summary: get user
- *     description:
+ *     description: get user by id
  *     tags: [users]
  *     parameters:
  *       - in: path
@@ -158,13 +198,19 @@ router.put('/reset-password', rateLimiters.auth, usersController.resetPassword);
  *       200:
  *         description: Ok
  */
-router.get('/:id', rateLimiters.common, usersController.getUser);
+router.get(
+  '/:id',
+  rateLimiter(),
+  checkValidation(getUserValidationSchema),
+  usersController.getUser,
+);
 
 /**
  * @swagger
  * /api/users/{id}/password:
  *   put:
  *     summary: update password
+ *     description: update the user's password
  *     tags: [users]
  *     security:
  *       - bearerAuth: []
@@ -194,7 +240,8 @@ router.get('/:id', rateLimiters.common, usersController.getUser);
  */
 router.put(
   '/:id/password',
-  rateLimiters.database,
+  rateLimiter(),
+  checkValidation(updatePasswordValidationSchema),
   authCheck.isSignIn,
   usersController.updatePassword,
 );
@@ -204,6 +251,7 @@ router.put(
  * /api/users/{id}/email:
  *   put:
  *     summary: update e-mail
+ *     description: update the user's e-mail
  *     tags: [users]
  *     security:
  *       - bearerAuth: []
@@ -233,7 +281,8 @@ router.put(
  */
 router.put(
   '/:id/email',
-  rateLimiters.database,
+  rateLimiter(),
+  checkValidation(updateEmailValidationSchema),
   authCheck.isSignIn,
   usersController.updateEmail,
 );
@@ -243,6 +292,7 @@ router.put(
  * /api/users/activate:
  *   put:
  *     summary: activate account
+ *     description: activate the user's account
  *     tags: [users]
  *     requestBody:
  *       required: true
@@ -262,13 +312,19 @@ router.put(
  *       200:
  *         description: Ok
  */
-router.put('/activate', rateLimiters.database, usersController.activateAccount);
+router.put(
+  '/activate',
+  rateLimiter(),
+  checkValidation(activateAccountValidationSchema),
+  usersController.activateAccount,
+);
 
 /**
  * @swagger
  * /api/users/{id}/deactivate:
  *   delete:
  *     summary: deactivate account
+ *     description: deactivate the user's account
  *     tags: [users]
  *     security:
  *       - bearerAuth: []
@@ -284,7 +340,8 @@ router.put('/activate', rateLimiters.database, usersController.activateAccount);
  */
 router.delete(
   '/:id/deactivate',
-  rateLimiters.database,
+  rateLimiter(),
+  checkValidation(deactivateAccountValidationSchema),
   authCheck.isSignIn,
   usersController.deactivateAccount,
 );
