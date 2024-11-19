@@ -58,6 +58,37 @@ class TokenService {
       throw createError.Unauthorized('Please sign in again.');
     }
   }
+
+  async createResetPasswordToken(userID: string): Promise<string> {
+    try {
+      const secret = config.token.passwordReset.secret;
+      const options = {
+        expiresIn: config.token.passwordReset.options.expiresIn,
+        issuer: 'otegecmis.github.io',
+        audience: String(userID),
+      };
+
+      return jsonwebtoken.sign({}, secret, options);
+    } catch (error) {
+      throw createError.InternalServerError(
+        'Something went wrong while creating the reset password token.',
+      );
+    }
+  }
+
+  async verifyResetPasswordToken(resetCode: string): Promise<string> {
+    try {
+      const secret = config.token.passwordReset.secret;
+      const payload = jsonwebtoken.verify(resetCode, secret) as {
+        aud: string;
+      };
+      const userID = payload.aud;
+
+      return userID;
+    } catch (error) {
+      throw createError.Unauthorized('Ops! Something went wrong.');
+    }
+  }
 }
 
 export default new TokenService();
