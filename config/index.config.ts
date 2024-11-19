@@ -9,10 +9,14 @@ const env = envSchema({
       'ORIGIN',
       'NODE_ENV',
       'MONGO_URI',
+      'SMTP_USER',
+      'SMTP_PASS',
       'ACCESS_TOKEN_SECRET',
       'ACCESS_TOKEN_EXPIRATION',
       'REFRESH_TOKEN_SECRET',
       'REFRESH_TOKEN_EXPIRATION',
+      'PASSWORD_RESET_SECRET',
+      'PASSWORD_RESET_EXPIRATION',
     ],
     properties: {
       PORT: {
@@ -28,6 +32,12 @@ const env = envSchema({
       MONGO_URI: {
         type: 'string',
       },
+      SMTP_USER: {
+        type: 'string',
+      },
+      SMTP_PASS: {
+        type: 'string',
+      },
       ACCESS_TOKEN_SECRET: {
         type: 'string',
       },
@@ -41,6 +51,13 @@ const env = envSchema({
       REFRESH_TOKEN_EXPIRATION: {
         type: 'string',
         default: '7d',
+      },
+      PASSWORD_RESET_SECRET: {
+        type: 'string',
+      },
+      PASSWORD_RESET_EXPIRATION: {
+        type: 'string',
+        default: '15m',
       },
     },
   },
@@ -68,7 +85,23 @@ const config = {
         expiresIn: env.REFRESH_TOKEN_EXPIRATION,
       },
     },
+    passwordReset: {
+      secret: env.PASSWORD_RESET_SECRET,
+      options: {
+        expiresIn: env.PASSWORD_RESET_EXPIRATION,
+      },
+    },
   },
+  mail: {
+    service: 'Gmail',
+    host: 'smtp.gmail.com',
+    port: parseInt('465', 10),
+    secure: true,
+    auth: {
+      user: env.SMTP_USER,
+      pass: env.SMTP_PASS,
+    },
+  }
 };
 
 export default config;
