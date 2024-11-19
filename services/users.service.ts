@@ -42,11 +42,8 @@ class UsersService {
 
   async getUser(id: string): Promise<Object> {
     const findUser = await this.getUserByID(id);
-    const getQuotesByAuthor = await quotesService.getQuotesByAuthor(
-      findUser.id,
-    );
-
-    const quotes = getQuotesByAuthor.quotes.map((quote) => ({
+    const quotesByAuthor = await quotesService.getQuotesByAuthor(findUser.id);
+    const quotes = quotesByAuthor.map((quote: any) => ({
       id: quote.id,
       quote: quote.quote,
       author: quote.author,
