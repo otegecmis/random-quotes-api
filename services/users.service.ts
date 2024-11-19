@@ -2,8 +2,10 @@ import bcrypt from 'bcryptjs';
 import createError from 'http-errors';
 
 import { IUser } from '../models/User';
+import { IQuote } from '../models/Quote';
 import userRepository from '../repositories/user.repository';
 import tokenService from './token.service';
+import quotesService from './quotes.service';
 
 class UsersService {
   async createUser(user: IUser): Promise<Object> {
@@ -39,9 +41,20 @@ class UsersService {
   }
 
   async getUser(id: string): Promise<Object> {
+    const findUser = await this.getUserByID(id);
+    const getQuotesByAuthor = await quotesService.getQuotesByAuthor(findUser.id);
+
+    const quotes = getQuotesByAuthor.quotes.map((quote) => ({
+      id: quote.id,
+      quote: quote.quote,
+      author: quote.author,
+    }));
+    
     return {
-      message: 'WIP',
-      id,
+      id: findUser.id,
+      name: findUser.name,
+      surname: findUser.surname,
+      quotes
     };
   }
 
