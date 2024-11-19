@@ -69,8 +69,7 @@ class UsersController {
       const { email } = req.body;
       const result = await authService.sendResetPasswordToken(email);
 
-      // TODO: After implementing the e-mail service, the response should be 200.
-      res.status(503).json({
+      res.status(200).json({
         result: result,
       });
     } catch (error) {
