@@ -49,10 +49,15 @@ class AuthService {
     return result;
   }
 
-  async sendResetCode(email: string): Promise<Object> {
+  async sendResetPasswordToken(email: string): Promise<Object> {
+    const user: IUser = await usersService.getUserByEmail(email);
+    const message = 'Password reset service is not available at the moment.';
+    const resetPasswordToken = await tokenService.createResetPasswordToken(
+      user.id,
+    );
+
     return {
-      message: 'WIP',
-      email,
+      message: message,
     };
   }
 }

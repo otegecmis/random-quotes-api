@@ -3,6 +3,7 @@ import createError from 'http-errors';
 
 import { IUser } from '../models/User';
 import userRepository from '../repositories/user.repository';
+import tokenService from './token.service';
 
 class UsersService {
   async createUser(user: IUser): Promise<Object> {
@@ -73,11 +74,23 @@ class UsersService {
     };
   }
 
-  async resetPassword(resetCode: string, newPassword: string): Promise<Object> {
-    return {
-      message: 'WIP',
-      resetCode,
+  async resetPassword(
+    resetPasswordToken: string,
+    newPassword: string,
+  ): Promise<Object> {
+    const userID =
+      await tokenService.verifyResetPasswordToken(resetPasswordToken);
+    const updatedUser = await userRepository.updatePassword(
+      userID,
       newPassword,
+    );
+
+    if (!updatedUser) {
+      throw createError(400, 'Failed to reset password.');
+    }
+
+    return {
+      message: 'Password reset successfully.',
     };
   }
 
