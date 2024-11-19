@@ -20,23 +20,11 @@ Update the generated `.env` file as needed and review the `.env.example` file fo
 
 - **Start the project**
 
-Start in Development Mode:
-
-```sh
-npm run dev
-```
-
-Build and Start for Production:
-
-```sh
-npm run build && npm run start
-```
-
-Start with Docker:
-
-```sh
-npm run docker
-```
+| Action                                 | Command                             |
+| -------------------------------------- | ----------------------------------- |
+| Start in Development Mode              | `npm run dev`                       |
+| Build and Start for Production         | `npm run build && npm run start`    |
+| Start with Docker                      | `npm run docker`                    |
 
 That's it! 🥳
 
@@ -49,7 +37,7 @@ To access `Swagger` documentation, make sure the `NODE_ENV` in the `.env` file i
 Then, you can access it via `api/swagger`.
 
 <div style="float: left;">
-    <img src="assets/swagger.jpeg" style="width: 70%;" />
+    <img src="assets/swagger.jpeg" style="width: 80%;" />
 </div>
 
 
