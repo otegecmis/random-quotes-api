@@ -1,6 +1,6 @@
 import createError from 'http-errors';
 
-import { IQuote } from '../models/Quote';
+import { EStatus, IQuote } from '../models/Quote';
 import quoteRepository from '../repositories/quote.repository';
 
 class QuotesService {
@@ -119,6 +119,10 @@ class QuotesService {
       throw createError.Unauthorized(
         'You are not authorized to perform this action.',
       );
+    }
+
+    if (getQuote.status === EStatus.inactive) {
+      throw createError.NotFound('Quote not found.');
     }
 
     await quoteRepository.deleteQuote(getQuote.id);

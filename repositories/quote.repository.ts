@@ -13,7 +13,7 @@ class QuoteRepository {
 
   async getQuoteByID(id: string): Promise<IQuote | null> {
     try {
-      return await Quote.findById(id).exec();
+      return await Quote.findOne({ _id: id, status: EStatus.active }).exec();
     } catch (error: any) {
       throw createError(500, `${error.message}`);
     }
@@ -21,7 +21,7 @@ class QuoteRepository {
 
   async getQuotesByAuthor(id: string) {
     try {
-      return await Quote.find({ userID: id }).exec();
+      return await Quote.find({ userID: id, status: EStatus.active }).exec();
     } catch (error: any) {
       throw createError(500, `${error.message}`);
     }
