@@ -34,7 +34,7 @@ class UsersService {
     const getUser = await userRepository.getUserByEmail(email);
 
     if (!getUser) {
-      throw createError.Unauthorized('Invalid email or password.');
+      throw createError.Unauthorized('Please enter a valid information.');
     }
 
     return getUser;
