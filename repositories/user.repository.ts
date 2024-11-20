@@ -40,6 +40,10 @@ class UserRepository {
         throw createError(404, 'User not found.');
       }
 
+      if (getUser.status === false) {
+        throw createError(403, 'User account is not active, please activate your account.');
+      }
+
       getUser.password = await bcrypt.hash(password, 10);
 
       return getUser.save();
@@ -54,6 +58,10 @@ class UserRepository {
 
       if (!getUser) {
         throw createError(404, 'User not found.');
+      }
+
+      if (getUser.status === false) {
+        throw createError(403, 'User account is not active, please activate your account.');
       }
 
       getUser.email = email;
