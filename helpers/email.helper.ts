@@ -20,6 +20,13 @@ class EMail {
     text: string,
   ): Promise<{ message: string }> {
     try {
+      if (
+        config.email.auth.user === 'smtp-user' ||
+        config.email.auth.pass === 'smtp-pass'
+      ) {
+        throw createError(500, 'Email configuration is missing.');
+      }
+
       await this.transporter.sendMail({
         from: config.email.auth.user,
         to,

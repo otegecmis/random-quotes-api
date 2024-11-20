@@ -34,9 +34,11 @@ const env = envSchema({
       },
       SMTP_USER: {
         type: 'string',
+        default: 'smtp-user',
       },
       SMTP_PASS: {
         type: 'string',
+        default: 'smtp-pass',
       },
       ACCESS_TOKEN_SECRET: {
         type: 'string',

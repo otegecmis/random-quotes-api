@@ -6,9 +6,6 @@ NODE_ENV = development
 
 MONGO_URI = mongodb://mongo:27017/quotes
 
-SMTP_USER = smtp-user
-SMTP_PASS = smtp-pass
-
 ACCESS_TOKEN_SECRET = access-token-secret
 REFRESH_TOKEN_SECRET = refresh-token-secret
 PASSWORD_RESET_SECRET = password-reset-secret
