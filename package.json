@@ -9,7 +9,7 @@
     "build": "tsc",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
     "clean": "rm -rf dist",
-    "env": "node scripts/generate-env.js",
+    "env": "node scripts/env.js",
     "docker": "docker-compose up --build -d"
   },
   "dependencies": {
