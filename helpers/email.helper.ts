@@ -1,6 +1,7 @@
 import createError from 'http-errors';
 import nodemailer from 'nodemailer';
 
+import logger from "../helpers/logger.helper"
 import config from '../config/index.config';
 
 class EMail {
@@ -20,13 +21,6 @@ class EMail {
     text: string,
   ): Promise<{ message: string }> {
     try {
-      if (
-        config.email.auth.user === 'smtp-user' ||
-        config.email.auth.pass === 'smtp-pass'
-      ) {
-        throw createError(500, 'Email configuration is missing.');
-      }
-
       await this.transporter.sendMail({
         from: config.email.auth.user,
         to,
@@ -38,7 +32,9 @@ class EMail {
         message: 'Email sent successfully.',
       };
     } catch (error: any) {
-      throw createError(500, error.message);
+      logger.error(error.message);
+
+      throw createError(500, 'Email could not be sent.');
     }
   }
 }
