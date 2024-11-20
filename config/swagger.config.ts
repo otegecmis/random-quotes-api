@@ -28,7 +28,7 @@ const swaggerSpec = swaggerJSDoc({
 const theme = new SwaggerTheme();
 const options = {
   explorer: false,
-  customCss: theme.getBuffer(SwaggerThemeNameEnum.GRUVBOX),
+  customCss: theme.getBuffer(SwaggerThemeNameEnum.FLATTOP),
 };
 
 export const serve = swaggerUI.serve;
