@@ -16,7 +16,7 @@ git clone https://github.com/otegecmis/random-quotes-api.git && cd random-quotes
 npm run env
 ```
 
-Update the generated `.env` file as needed and review the `.env.example` file for more options.
+Update the generated `.env` file as needed.
 
 - **Start the project**
 
