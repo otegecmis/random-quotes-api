@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 import nodemailer from 'nodemailer';
 
-import logger from "../helpers/logger.helper"
+import logger from '../helpers/logger.helper';
 import config from '../config/index.config';
 
 class EMail {
