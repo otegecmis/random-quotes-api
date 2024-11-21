@@ -41,7 +41,10 @@ class UserRepository {
       }
 
       if (getUser.status === false) {
-        throw createError(403, 'User account is not active, please activate your account.');
+        throw createError(
+          403,
+          'User account is not active, please activate your account.',
+        );
       }
 
       getUser.password = await bcrypt.hash(password, 10);
@@ -61,7 +64,10 @@ class UserRepository {
       }
 
       if (getUser.status === false) {
-        throw createError(403, 'User account is not active, please activate your account.');
+        throw createError(
+          403,
+          'User account is not active, please activate your account.',
+        );
       }
 
       getUser.email = email;
