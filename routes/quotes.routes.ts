@@ -57,6 +57,8 @@ router.post(
  *     summary: get quotes
  *     description:
  *     tags: [quotes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: currentPage
@@ -74,6 +76,7 @@ router.get(
   '/',
   rateLimiter(),
   checkValidation(getQuotesValidationSchema),
+  authCheck.isSignIn,
   quotesController.getQuotes,
 );
 
@@ -84,11 +87,18 @@ router.get(
  *     summary: get random quote
  *     description:
  *     tags: [quotes]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: OK
  */
-router.get('/random', rateLimiter(), quotesController.randomQuote);
+router.get(
+  '/random',
+  rateLimiter(),
+  authCheck.isSignIn,
+  quotesController.randomQuote,
+);
 
 /**
  * @swagger
@@ -96,6 +106,8 @@ router.get('/random', rateLimiter(), quotesController.randomQuote);
  *   get:
  *     summary: get quote
  *     description:
+ *     security:
+ *       - bearerAuth: []
  *     tags: [quotes]
  *     parameters:
  *       - in: path
@@ -111,6 +123,7 @@ router.get(
   '/:id',
   rateLimiter(),
   checkValidation(getQuoteValidationSchema),
+  authCheck.isSignIn,
   quotesController.getQuote,
 );
 
