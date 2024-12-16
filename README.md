@@ -1,6 +1,11 @@
 ## Random Quotes API [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/otegecmis/random-quotes-api/blob/main/LICENSE.md)
 
 - A backend API built with **Node.js**, **MongoDB**, **Express.js** and **TypeScript** for fetching random quotes.
+- The project follows a `Layered Architecture` (MVC, Service, Repository).
+- Data is managed using `Mongoose.`
+- `JSON Web Token (JWT)` is implemented to secure user accounts with token-based authentication.
+- The API is documented clearly using `Swagger.`
+- `GitHub Actions` is configured to automate releases with `Semantic Release.`
 
 ### 1. Installation
 
